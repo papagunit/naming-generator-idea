@@ -1,0 +1,60 @@
+import "./styles.css";
+
+let copyOutput = document.getElementById("output") as HTMLInputElement;
+let campaignName = document?.getElementById("campaignName") as HTMLInputElement;
+let businessUnit = document?.getElementById("businessUnit") as HTMLInputElement;
+
+// next to impossible to debug in here
+function CopyOutputtoClipboard(output: string): void {
+  window.navigator["clipboard"].writeText(output);
+}
+
+// gets current dropdown value, need to add a param for the element
+function getdropvalue(id: string) {
+  let currentdropvalue: string | undefined = (document.getElementById(
+    id
+  ) as HTMLSelectElement).value;
+  console.log(currentdropvalue);
+  return currentdropvalue;
+}
+
+function assembleOutput(): string {
+  let concatValue: string =
+    campaignName.value +
+    "-" +
+    businessUnit.value +
+    "-" +
+    getdropvalue("dropdown");
+
+  return concatValue;
+}
+
+// get all elements that should have an event listener
+let eventelements: Array<HTMLElement> = Array.from(
+  document.querySelectorAll("input, select")
+);
+
+//prepare final output. need conditionals for checkboxes
+
+// changes button value
+const inputHandler = function (e: Event): string {
+  console.log("it ran");
+  return (copyOutput.innerHTML = assembleOutput());
+};
+
+//fix this, need an onchange
+let dropdownelm: HTMLElement | null = document.getElementById("dropdown");
+dropdownelm!.onchange = inputHandler;
+
+//console.log(dropdownelm[0].innerHTML);
+//document?.getElementById("dropdown").onchange = inputHandler;
+// set event handlers
+for (let i of eventelements) {
+  i.addEventListener("input", inputHandler);
+  i.addEventListener("propertychange", inputHandler);
+}
+
+// copy value to clipboard
+copyOutput?.addEventListener("click", () =>
+  CopyOutputtoClipboard(copyOutput.innerHTML)
+);
