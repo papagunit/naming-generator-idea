@@ -3,6 +3,8 @@ import "./styles.css";
 let copyOutput = document.getElementById("output") as HTMLInputElement;
 let campaignName = document?.getElementById("campaignName") as HTMLInputElement;
 let businessUnit = document?.getElementById("businessUnit") as HTMLInputElement;
+let isTest: boolean = (document.getElementById("isTest") as HTMLInputElement).checked;
+let includeDay: boolean = (document.getElementById("includeDay") as HTMLInputElement).checked;
 
 // next to impossible to debug in here
 function CopyOutputtoClipboard(output: string): void {
@@ -18,6 +20,7 @@ function getdropvalue(id: string) {
   return currentdropvalue;
 }
 
+//prepare final output. need conditionals for checkboxes
 function assembleOutput(): string {
   let concatValue: string =
     campaignName.value +
@@ -31,10 +34,10 @@ function assembleOutput(): string {
 
 // get all elements that should have an event listener
 let eventelements: Array<HTMLElement> = Array.from(
-  document.querySelectorAll("input, select")
+  document.querySelectorAll("input")
 );
 
-//prepare final output. need conditionals for checkboxes
+
 
 // changes button value
 const inputHandler = function (e: Event): string {
