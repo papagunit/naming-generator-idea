@@ -3,9 +3,19 @@ import "./styles.css";
 /*
 Next steps:
 Objects for each dropdown
-Function to generate dropdown from object, start this function on load
+Function to generate dropdown from object, start this function on load - 
+business unit, location group, service line, campaign type
+
 Object with each element
 Object with each select, iterate over that with the event handler
+Object for each output name, then use the object properties
+Object for each output folder
+
+Copy services for each button
+
+[TEST]-FiscalYear-Month-[Day]-Business Unit/Ministry Abbreviation-[Location/Medical Group]-
+Service Line-Brief Name-Campaign Type-[Shortened Subject Line or description]-[Number in
+series]-[Version Number]
 */
 
 interface Elms {
@@ -17,11 +27,11 @@ interface Elms {
   getelm(): void;
 }
 
-class ElmList implements Elms {
-  constructor();
-}
+//class ElmList implements Elms {
+//  constructor();
+//}
 
-let copyOutput = document.getElementById("output") as HTMLInputElement;
+let copyOutput = document.getElementById("CampaignName") as HTMLInputElement;
 let campaignName = document?.getElementById("campaignName") as HTMLInputElement;
 let businessUnit = document?.getElementById("businessUnit") as HTMLInputElement;
 let isTest: boolean = (document.getElementById("isTest") as HTMLInputElement)
@@ -61,7 +71,7 @@ let eventelements: Array<HTMLElement> = Array.from(
   document.querySelectorAll("input")
 );
 
-// changes button value
+// changes button value, this is kind of the magnum opus
 const inputHandler = function (e: Event): string {
   console.log("it ran");
   return (copyOutput.innerHTML = assembleOutput());

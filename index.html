@@ -5,8 +5,14 @@
   </head>
 
   <body>
-    <input type="text" name="campaignName" id="campaignName" />
+    <!-- fiscal year-->
+    <!-- Month-->
+    <!-- Day -->
     <input type="text" name="businessUnit" id="businessUnit" />
+    <!-- Location/Medical Group-->
+    <!-- Service Line-->
+    <input type="text" name="campaignName" id="campaignName" />
+    <!-- Campaign Type-->
     <label for="isTest">Is Test?</label>
     <input type="checkbox" name="isTest" id="isTest" value="true" />
     <label for="includeDay">Include Day?</label>
@@ -18,8 +24,45 @@
     </select>
 
     <br />
-    Output:
-    <button id="output">yes</button>
+    Campaign Name:
+    <button id="CampaignName"></button>
+    <span>Folder Location: </span><span id="CampaignFolder"></span>
+
+    <br />
+    Email Name:
+    <button id="EmailName"></button>
+    <span>Folder Location: </span><span id="EmailFolder"></span>
+
+    <br />
+    Segment Name:
+    <button id="SegmentName"></button>
+    <span>Folder Location: </span><span id="SegmentFolder"></span>
+
+    <br />
+    Form Name:
+    <button id="FormName"></button>
+    <span>Folder Location: </span><span id="FormFolder"></span>
+
+    <br />
+    Landing Page Name:
+    <button id="LPName"></button>
+    <span>Folder Location: </span><span id="LPFolder"></span>
+
+    <br />
+    Dynamic/Shared Content:
+    <button id="ContentName"></button>
+    <span>Folder Location: </span><span id="ContentFolder"></span>
+
+    <br />
+    Program Name:
+    <button id="ProgramName"></button>
+    <span>Folder Location: </span><span id="ProgramFolder"></span>
+
+    <br />
+    Shared Filter:
+    <button id="SharedFilter"></button>
+    <span>Folder Location: </span><span id="FilterFolder"></span>
+
     <script async src="src/index.ts"></script>
   </body>
 </html>
