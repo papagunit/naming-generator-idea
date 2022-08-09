@@ -1,10 +1,34 @@
 import "./styles.css";
 
+/*
+Next steps:
+Objects for each dropdown
+Function to generate dropdown from object, start this function on load
+Object with each element
+Object with each select, iterate over that with the event handler
+*/
+
+interface Elms {
+  copyOutput: HTMLInputElement;
+  campaignName: HTMLInputElement;
+  businessUnit: HTMLInputElement;
+  isTest: boolean;
+  includeDay: boolean;
+  getelm(): void;
+}
+
+class ElmList implements Elms {
+  constructor();
+}
+
 let copyOutput = document.getElementById("output") as HTMLInputElement;
 let campaignName = document?.getElementById("campaignName") as HTMLInputElement;
 let businessUnit = document?.getElementById("businessUnit") as HTMLInputElement;
-let isTest: boolean = (document.getElementById("isTest") as HTMLInputElement).checked;
-let includeDay: boolean = (document.getElementById("includeDay") as HTMLInputElement).checked;
+let isTest: boolean = (document.getElementById("isTest") as HTMLInputElement)
+  .checked;
+let includeDay: boolean = (document.getElementById(
+  "includeDay"
+) as HTMLInputElement).checked;
 
 // next to impossible to debug in here
 function CopyOutputtoClipboard(output: string): void {
@@ -36,8 +60,6 @@ function assembleOutput(): string {
 let eventelements: Array<HTMLElement> = Array.from(
   document.querySelectorAll("input")
 );
-
-
 
 // changes button value
 const inputHandler = function (e: Event): string {
