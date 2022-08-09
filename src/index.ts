@@ -9,7 +9,7 @@ business unit, location group, service line, campaign type
 Object with each element
 Object with each select, iterate over that with the event handler
 Object for each output name, then use the object properties
-Object for each output folder
+Object for each output folder, add internal function using this and then property name
 
 Copy services for each button
 
@@ -26,6 +26,56 @@ interface Elms {
   includeDay: boolean;
   getelm(): void;
 }
+
+interface Folders {
+  CampaignFolder: HTMLElement;
+  EmailFolder: HTMLElement;
+  SegmentFolder: HTMLElement;
+  FormFolder: HTMLElement;
+  LPFolder: HTMLElement;
+  ContentFolder: HTMLElement;
+  ProgramFolder: HTMLElement;
+  FilterFolder: HTMLElement;
+  setInnerText(name: string, value: string): void;
+  getElement(name: string): HTMLElement;
+}
+
+// Necessary type assertion
+let FolderList: Folders = {
+  CampaignFolder: document.getElementById("CampaignFolder") as HTMLInputElement,
+  EmailFolder: document.getElementById("EmailFolder") as HTMLInputElement,
+  SegmentFolder: document.getElementById("SegmentFolder") as HTMLInputElement,
+  FormFolder: document.getElementById("FormFolder") as HTMLInputElement,
+  LPFolder: document.getElementById("LPFolder") as HTMLInputElement,
+  ContentFolder: document.getElementById("ContentFolder") as HTMLInputElement,
+  ProgramFolder: document.getElementById("ProgramFolder") as HTMLInputElement,
+  FilterFolder: document.getElementById("FilterFolder") as HTMLInputElement,
+  setInnerText: (name: string, value: string): void => {
+    let ElementHolder: HTMLElement = FolderList.getElement(name);
+    ElementHolder.innerText = value;
+  },
+  getElement: (name: string): HTMLElement => {
+    let elm = document.getElementById(name) as HTMLInputElement;
+    return elm;
+  }
+};
+
+let FolderElms: Array<string> = [
+  "CampaignFolder",
+  "EmailFolder",
+  "SegmentFolder",
+  "FormFolder",
+  "LPFolder",
+  "ContentFolder",
+  "ProgramFolder",
+  "FilterFolder"
+];
+
+for (let i of FolderElms) {
+  FolderList.setInnerText(i, "Test");
+}
+
+//FolderList.setInnerText(FolderList.CampaignFolder, "this is a test");
 
 //class ElmList implements Elms {
 //  constructor();
