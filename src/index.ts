@@ -152,6 +152,25 @@ let includeDay: boolean = (document.getElementById(
   "includeDay"
 ) as HTMLInputElement).checked;
 
+function returnOptions(): number {
+  let optionnumb: number;
+  if (isTest && includeDay) {
+    optionnumb = 4;
+    return optionnumb;
+  } else if (isTest && !includeDay) {
+    optionnumb = 3;
+    return optionnumb;
+  } else if (!isTest && includeDay) {
+    optionnumb = 2;
+    return optionnumb;
+  } else if (!isTest && !includeDay) {
+    optionnumb = 1;
+    return optionnumb;
+  } else {
+    optionnumb = 0;
+    return optionnumb;
+  }
+}
 // next to impossible to debug in here
 function CopyOutputtoClipboard(output: string): void {
   window.navigator["clipboard"].writeText(output);
@@ -159,9 +178,34 @@ function CopyOutputtoClipboard(output: string): void {
 
 class AssetNames {
   get CampaignName(): string {
-    return (
-      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
-    );
+    if (returnOptions() === 4) {
+      return (
+        "[TEST]-" +
+        ElmOps.getElmVal("Year") +
+        "-" +
+        ElmOps.getElmVal("Month") +
+        "-" +
+        ElmOps.getElmVal("Day") +
+        "-" +
+        ElmOps.getElmVal("businessUnit") +
+        "-" +
+        (ElmOps.getElmVal("LocationGroup").length > 1
+          ? ElmOps.getElmVal("LocationGroup") + "-"
+          : "") + //optional
+        ElmOps.getElmVal("Service Line") +
+        "-" +
+        ElmOps.getElmVal("campaignName")
+      );
+    } else if (returnOptions() === 3) {
+    } else if (returnOptions() === 2) {
+    } else if (returnOptions() === 1) {
+    } else {
+      return (
+        ElmOps.getElmVal("campaignName") +
+        "-" +
+        ElmOps.getElmVal("businessUnit")
+      );
+    }
   }
   get EmailName(): string {
     return (
