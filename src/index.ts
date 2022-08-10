@@ -27,38 +27,35 @@ interface Elms {
   getelm(): void;
 }
 
-interface Folders {
-  CampaignFolder: HTMLElement;
-  EmailFolder: HTMLElement;
-  SegmentFolder: HTMLElement;
-  FormFolder: HTMLElement;
-  LPFolder: HTMLElement;
-  ContentFolder: HTMLElement;
-  ProgramFolder: HTMLElement;
-  FilterFolder: HTMLElement;
+interface Operations {
   setInnerText(name: string, value: string): void;
   getElement(name: string): HTMLElement;
+  getElmVal(name: string): string;
 }
 
-// Necessary type assertion
-let FolderList: Folders = {
-  CampaignFolder: document.getElementById("CampaignFolder") as HTMLInputElement,
-  EmailFolder: document.getElementById("EmailFolder") as HTMLInputElement,
-  SegmentFolder: document.getElementById("SegmentFolder") as HTMLInputElement,
-  FormFolder: document.getElementById("FormFolder") as HTMLInputElement,
-  LPFolder: document.getElementById("LPFolder") as HTMLInputElement,
-  ContentFolder: document.getElementById("ContentFolder") as HTMLInputElement,
-  ProgramFolder: document.getElementById("ProgramFolder") as HTMLInputElement,
-  FilterFolder: document.getElementById("FilterFolder") as HTMLInputElement,
+// Necessary type assertion. This object has functions to get and set folder naming
+let ElmOps: Operations = {
   setInnerText: (name: string, value: string): void => {
-    let ElementHolder: HTMLElement = FolderList.getElement(name);
+    let ElementHolder: HTMLElement = ElmOps.getElement(name);
     ElementHolder.innerText = value;
   },
+  // pseudo like callback function used with set inner text
   getElement: (name: string): HTMLElement => {
     let elm = document.getElementById(name) as HTMLInputElement;
     return elm;
+  },
+  getElmVal: (name: string): string => {
+    return (document?.getElementById(name) as HTMLInputElement).value;
   }
 };
+/*
+let campaignNameVal: string = (document?.getElementById(
+  "campaignName"
+) as HTMLInputElement).value;
+let businessUnitVal: string = (document?.getElementById(
+  "businessUnit"
+) as HTMLInputElement).value;
+*/
 
 let FolderElms: Array<string> = [
   "CampaignFolder",
@@ -71,9 +68,50 @@ let FolderElms: Array<string> = [
   "FilterFolder"
 ];
 
-for (let i of FolderElms) {
-  FolderList.setInnerText(i, "Test");
-}
+// set folder generation logic here
+
+let FolderValues: object = {
+  CampaignFolder: (): string => {
+    return (
+      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
+    );
+  },
+  EmailFolder: (): string => {
+    return (
+      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
+    );
+  },
+  SegmentFolder: (): string => {
+    return (
+      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
+    );
+  },
+  FormFolder: (): string => {
+    return (
+      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
+    );
+  },
+  LPFolder: (): string => {
+    return (
+      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
+    );
+  },
+  ContentFolder: (): string => {
+    return (
+      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
+    );
+  },
+  ProgramFolder: (): string => {
+    return (
+      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
+    );
+  },
+  FilterFolder: (): string => {
+    return (
+      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
+    );
+  }
+};
 
 //FolderList.setInnerText(FolderList.CampaignFolder, "this is a test");
 
@@ -121,25 +159,33 @@ let eventelements: Array<HTMLElement> = Array.from(
   document.querySelectorAll("input")
 );
 
-// changes button value, this is kind of the magnum opus
+// sets all output values, including folder name, this is kind of the magnum opus
 const inputHandler = function (e: Event): string {
   console.log("it ran");
+
+  // set folders **************
+  for (let LookupValue of FolderElms) {
+    // let assembledvalue: string = pull from an object, pass LookupValue as key, uses foldervalues
+    let assembledvalue: string = FolderValues[LookupValue]();
+    ElmOps.setInnerText(LookupValue, assembledvalue);
+  }
+  //set naming
   return (copyOutput.innerHTML = assembleOutput());
 };
 
-//fix this, need an onchange
+// assigns event handler to all dropdowns - still need to capture all dropdowns
 let dropdownelm: HTMLElement | null = document.getElementById("dropdown");
 dropdownelm!.onchange = inputHandler;
 
 //console.log(dropdownelm[0].innerHTML);
 //document?.getElementById("dropdown").onchange = inputHandler;
-// set event handlers
+// set event handlers for input fields and checkboxes
 for (let i of eventelements) {
   i.addEventListener("input", inputHandler);
   i.addEventListener("propertychange", inputHandler);
 }
 
-// copy value to clipboard
+// copy value to clipboard - need to iterate over each button
 copyOutput?.addEventListener("click", () =>
   CopyOutputtoClipboard(copyOutput.innerHTML)
 );
