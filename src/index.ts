@@ -18,11 +18,18 @@ Copy services for each button
 Service Line-Brief Name-Campaign Type-[Shortened Subject Line or description]-[Number in
 series]-[Version Number]
 */
+interface Dropdowns {
+  [index: string]: string;
+}
 
 // use these to generate dropdowns
-let BusinessUnits: Array<string> = ["tbd", "tbd"];
-let LocationGroups: Array<string> = ["tbd", "tbd"];
-let ServiceLine: Array<string> = ["tbd", "tbd"];
+let BusinessUnits: Dropdowns = { oneval: "one", twoval: "two" };
+let LocationGroups: Dropdowns = { oneval: "one", twoval: "two" };
+let ServiceLine: Dropdowns = { oneval: "one", twoval: "two" };
+
+for (const [key, value] of Object.entries(BusinessUnits)) {
+  ElmOps.setInnerHTML("businessUnit", key);
+}
 
 interface Months {
   [index: number]: string;
@@ -101,6 +108,7 @@ interface Operations {
   setInnerHTML(name: string, value: string): void;
   setSelectValue(name: string, value: string): void;
   setInputValue(name: string, value: string): void;
+  setInnerSelectHTML(name: string, value: string): void;
 }
 
 // Necessary type assertion. This object has functions to get and set folder naming
@@ -132,6 +140,12 @@ let ElmOps: Operations = {
       name
     ) as HTMLInputElement;
     ElementHolder.value = value;
+  },
+  setInnerSelectHTML: (name: string, value: string): void => {
+    let ElementHolder: HTMLSelectElement = ElmOps.getElement(
+      name
+    ) as HTMLSelectElement;
+    ElementHolder.innerHTML = value;
   }
 };
 
@@ -139,8 +153,15 @@ ElmOps.setSelectValue("Year", times.getYear());
 ElmOps.setSelectValue("Month", times.getMonth());
 ElmOps.setInputValue("Day", times.getDay());
 
+for (const [key, value] of Object.entries(BusinessUnits)) {
+  let SE: HTMLSelectElement = document.getElementById(
+    "businessUnit"
+  ) as HTMLSelectElement;
+  SE.innerHTML =
+    SE.innerHTML + '<option value="' + key + '">' + value + "</option>";
+}
 // gets current dropdown value, need to add a param for the element
-function getdropvalue(id: string) {
+function getdropvalue(id: string): string {
   let currentdropvalue: string | undefined = (document.getElementById(
     id
   ) as HTMLSelectElement).value;
@@ -285,8 +306,9 @@ class AssetNames {
       (ElmOps.getElmVal("locationGroup").length > 1
         ? ElmOps.getElmVal("locationGroup") + "-"
         : "") +
-      ElmOps.getElmVal("serviceLine") +
-      "-" +
+      (ElmOps.getElmVal("serviceLine").length > 1
+        ? ElmOps.getElmVal("serviceLine") + "-"
+        : "") +
       ElmOps.getElmVal("campaignName") +
       "-" +
       ElmOps.getElmVal("campaignType") +
