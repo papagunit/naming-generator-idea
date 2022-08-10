@@ -23,13 +23,13 @@ interface Dropdowns {
 }
 
 // use these to generate dropdowns
-let BusinessUnits: Dropdowns = { oneval: "one", twoval: "two" };
+let BusinessUnits: Dropdowns = {
+  null: "Please Select",
+  oneval: "one",
+  twoval: "two"
+};
 let LocationGroups: Dropdowns = { oneval: "one", twoval: "two" };
 let ServiceLine: Dropdowns = { oneval: "one", twoval: "two" };
-
-for (const [key, value] of Object.entries(BusinessUnits)) {
-  ElmOps.setInnerHTML("businessUnit", key);
-}
 
 interface Months {
   [index: number]: string;
@@ -145,7 +145,7 @@ let ElmOps: Operations = {
     let ElementHolder: HTMLSelectElement = ElmOps.getElement(
       name
     ) as HTMLSelectElement;
-    ElementHolder.innerHTML = value;
+    ElementHolder.innerHTML = ElementHolder.innerHTML + value;
   }
 };
 
@@ -154,12 +154,24 @@ ElmOps.setSelectValue("Month", times.getMonth());
 ElmOps.setInputValue("Day", times.getDay());
 
 for (const [key, value] of Object.entries(BusinessUnits)) {
-  let SE: HTMLSelectElement = document.getElementById(
-    "businessUnit"
-  ) as HTMLSelectElement;
-  SE.innerHTML =
-    SE.innerHTML + '<option value="' + key + '">' + value + "</option>";
+  ElmOps.setInnerSelectHTML(
+    "businessUnit",
+    '<option value="' + key + '">' + value + "</option>"
+  );
 }
+for (const [key, value] of Object.entries(LocationGroups)) {
+  ElmOps.setInnerSelectHTML(
+    "locationGroup",
+    '<option value="' + key + '">' + value + "</option>"
+  );
+}
+for (const [key, value] of Object.entries(ServiceLine)) {
+  ElmOps.setInnerSelectHTML(
+    "serviceLine",
+    '<option value="' + key + '">' + value + "</option>"
+  );
+}
+
 // gets current dropdown value, need to add a param for the element
 function getdropvalue(id: string): string {
   let currentdropvalue: string | undefined = (document.getElementById(
