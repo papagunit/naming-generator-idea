@@ -11,6 +11,7 @@ Object with each select, iterate over that with the event handler
 Object for each output name, then use the object properties
 Object for each output folder, add internal function using this and then property name
 
+Length limit recommendations if exceeds
 Copy services for each button
 
 [TEST]-FiscalYear-Month-[Day]-Business Unit/Ministry Abbreviation-[Location/Medical Group]-
@@ -23,11 +24,35 @@ let BusinessUnits: Array<string> = ["tbd", "tbd"];
 let LocationGroups: Array<string> = ["tbd", "tbd"];
 let ServiceLine: Array<string> = ["tbd", "tbd"];
 
-let TimeStamp = getCurrentTimestamp();
-let utc_date: string = new Date(TimeStamp).toUTCString();
-let year: string = new Date(TimeStamp).getFullYear();
+interface Months {
+  [index: number]: string;
+}
 
-let time: object = {
+// January starts on 0
+let convertMonth: Months = {
+  0: "JAN",
+  1: "FEB",
+  2: "MAR",
+  3: "APR",
+  4: "MAY",
+  5: "JUN",
+  6: "JUL",
+  7: "AUG",
+  8: "SEP",
+  9: "OCT",
+  10: "NOV",
+  11: "DEC"
+};
+
+interface timetable {
+  getCurrentTimestamp(): number;
+  getUTCDate(): string;
+  getYear(): string;
+  getMonth(): string;
+  getDay(): string;
+}
+
+let times: timetable = {
   getCurrentTimestamp: (): number => {
     return Date.now();
   },
@@ -37,9 +62,27 @@ let time: object = {
   },
   getYear: (): string => {
     let timestamp: number = Date.now();
-    return new Date(timestamp).toUTCString();
+    let year: number = new Date(timestamp).getFullYear();
+    let yearstring: string = year.toString();
+    yearstring = yearstring.substring(2);
+    return yearstring;
+  },
+  getMonth: (): string => {
+    let timestamp: number = Date.now();
+    let month: number = new Date(timestamp).getMonth();
+    return convertMonth[month]; // returns the shortened month value
+  },
+  getDay: (): string => {
+    let timestamp: number = Date.now();
+    let localtime: number = new Date(timestamp).getDate();
+    return localtime.toString();
   }
 };
+
+//test times
+console.log(times.getYear());
+console.log(times.getMonth());
+console.log(times.getDay());
 
 interface Elms {
   copyOutput: HTMLInputElement;
@@ -56,6 +99,8 @@ interface Operations {
   getElement(name: string): HTMLElement;
   getElmVal(name: string): string;
   setInnerHTML(name: string, value: string): void;
+  setSelectValue(name: string, value: string): void;
+  setInputValue(name: string, value: string): void;
 }
 
 // Necessary type assertion. This object has functions to get and set folder naming
@@ -75,8 +120,24 @@ let ElmOps: Operations = {
   setInnerHTML: (name: string, value: string): void => {
     let ElementHolder: HTMLElement = ElmOps.getElement(name);
     ElementHolder.innerHTML = value;
+  },
+  setSelectValue: (name: string, value: string): void => {
+    let ElementHolder: HTMLSelectElement = ElmOps.getElement(
+      name
+    ) as HTMLSelectElement;
+    ElementHolder.value = value;
+  },
+  setInputValue: (name: string, value: string): void => {
+    let ElementHolder: HTMLInputElement = ElmOps.getElement(
+      name
+    ) as HTMLInputElement;
+    ElementHolder.value = value;
   }
 };
+
+ElmOps.setSelectValue("Year", times.getYear());
+ElmOps.setSelectValue("Month", times.getMonth());
+ElmOps.setInputValue("Day", times.getDay());
 
 // gets current dropdown value, need to add a param for the element
 function getdropvalue(id: string) {
@@ -264,18 +325,6 @@ class AssetNames {
 }
 
 let getAssetNames = new AssetNames();
-
-//prepare final output. need conditionals for checkboxes
-function assembleOutput(): string {
-  let concatValue: string =
-    campaignName.value +
-    "-" +
-    businessUnit.value +
-    "-" +
-    ElmOps.getElmVal("dropdown");
-
-  return concatValue;
-}
 
 // get all elements that should have an event listener
 let eventelements: Array<HTMLElement> = Array.from(
