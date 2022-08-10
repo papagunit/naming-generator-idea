@@ -178,35 +178,36 @@ function CopyOutputtoClipboard(output: string): void {
 
 class AssetNames {
   get CampaignName(): string {
-    if (returnOptions() === 4) {
-      return (
-        "[TEST]-" +
-        ElmOps.getElmVal("Year") +
-        "-" +
-        ElmOps.getElmVal("Month") +
-        "-" +
-        ElmOps.getElmVal("Day") +
-        "-" +
-        ElmOps.getElmVal("businessUnit") +
-        "-" +
-        (ElmOps.getElmVal("LocationGroup").length > 1
-          ? ElmOps.getElmVal("LocationGroup") + "-"
-          : "") + //optional
-        ElmOps.getElmVal("Service Line") +
-        "-" +
-        ElmOps.getElmVal("campaignName")
-      );
-    } else if (returnOptions() === 3) {
-    } else if (returnOptions() === 2) {
-    } else if (returnOptions() === 1) {
-    } else {
-      return (
-        ElmOps.getElmVal("campaignName") +
-        "-" +
-        ElmOps.getElmVal("businessUnit")
-      );
-    }
+    return (
+      (isTest ? "[TEST]-" : "") +
+      ElmOps.getElmVal("Year") +
+      "-" +
+      ElmOps.getElmVal("Month") +
+      "-" +
+      (includeDay ? ElmOps.getElmVal("Day") + "-" : "") +
+      ElmOps.getElmVal("businessUnit") +
+      "-" +
+      (ElmOps.getElmVal("locationGroup").length > 1
+        ? ElmOps.getElmVal("locationGroup") + "-"
+        : "") +
+      ElmOps.getElmVal("serviceLine") +
+      "-" +
+      ElmOps.getElmVal("campaignName") +
+      "-" +
+      ElmOps.getElmVal("campaignType") +
+      "-" +
+      (ElmOps.getElmVal("Description").length > 1
+        ? ElmOps.getElmVal("Description") + "-"
+        : "") +
+      (ElmOps.getElmVal("Series").length > 1
+        ? ElmOps.getElmVal("Series") + "-"
+        : "") +
+      (ElmOps.getElmVal("Version").length > 1
+        ? ElmOps.getElmVal("Version") + "-"
+        : "")
+    );
   }
+
   get EmailName(): string {
     return (
       ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
