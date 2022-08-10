@@ -18,6 +18,11 @@ Service Line-Brief Name-Campaign Type-[Shortened Subject Line or description]-[N
 series]-[Version Number]
 */
 
+// use these to generate dropdowns
+let BusinessUnits: Array<string> = ["tbd", "tbd"];
+let LocationGroups: Array<string> = ["tbd", "tbd"];
+let ServiceLine: Array<string> = ["tbd", "tbd"];
+
 interface Elms {
   copyOutput: HTMLInputElement;
   campaignName: HTMLInputElement;
@@ -27,10 +32,12 @@ interface Elms {
   getelm(): void;
 }
 
+// used for ElmOps
 interface Operations {
   setInnerText(name: string, value: string): void;
   getElement(name: string): HTMLElement;
   getElmVal(name: string): string;
+  setInnerHTML(name: string, value: string): void;
 }
 
 // Necessary type assertion. This object has functions to get and set folder naming
@@ -45,17 +52,34 @@ let ElmOps: Operations = {
     return elm;
   },
   getElmVal: (name: string): string => {
-    return (document?.getElementById(name) as HTMLInputElement).value;
+    return (document.getElementById(name) as HTMLInputElement).value;
+  },
+  setInnerHTML: (name: string, value: string): void => {
+    let ElementHolder: HTMLElement = ElmOps.getElement(name);
+    ElementHolder.innerHTML = value;
   }
 };
-/*
-let campaignNameVal: string = (document?.getElementById(
-  "campaignName"
-) as HTMLInputElement).value;
-let businessUnitVal: string = (document?.getElementById(
-  "businessUnit"
-) as HTMLInputElement).value;
-*/
+
+// gets current dropdown value, need to add a param for the element
+function getdropvalue(id: string) {
+  let currentdropvalue: string | undefined = (document.getElementById(
+    id
+  ) as HTMLSelectElement).value;
+  console.log(currentdropvalue);
+  return currentdropvalue;
+}
+
+// element names for the buttons
+let AssetElms: Array<string> = [
+  "CampaignName",
+  "EmailName",
+  "SegmentName",
+  "FormName",
+  "LPName",
+  "ContentName",
+  "ProgramName",
+  "SharedFilter"
+];
 
 let FolderElms: Array<string> = [
   "CampaignFolder",
@@ -68,7 +92,7 @@ let FolderElms: Array<string> = [
   "FilterFolder"
 ];
 
-// set folder generation logic here
+// set folder generation logic here, called the FolderElms array and ElmOps functions. Should we convert these to getters?
 
 let FolderValues: object = {
   CampaignFolder: (): string => {
@@ -133,14 +157,50 @@ function CopyOutputtoClipboard(output: string): void {
   window.navigator["clipboard"].writeText(output);
 }
 
-// gets current dropdown value, need to add a param for the element
-function getdropvalue(id: string) {
-  let currentdropvalue: string | undefined = (document.getElementById(
-    id
-  ) as HTMLSelectElement).value;
-  console.log(currentdropvalue);
-  return currentdropvalue;
+class AssetNames {
+  get CampaignName(): string {
+    return (
+      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
+    );
+  }
+  get EmailName(): string {
+    return (
+      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
+    );
+  }
+  get SegmentName(): string {
+    return (
+      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
+    );
+  }
+  get FormName(): string {
+    return (
+      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
+    );
+  }
+  get LPName(): string {
+    return (
+      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
+    );
+  }
+  get ContentName(): string {
+    return (
+      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
+    );
+  }
+  get ProgramName(): string {
+    return (
+      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
+    );
+  }
+  get SharedFilter(): string {
+    return (
+      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
+    );
+  }
 }
+
+let getAssetNames = new AssetNames();
 
 //prepare final output. need conditionals for checkboxes
 function assembleOutput(): string {
@@ -149,7 +209,7 @@ function assembleOutput(): string {
     "-" +
     businessUnit.value +
     "-" +
-    getdropvalue("dropdown");
+    ElmOps.getElmVal("dropdown");
 
   return concatValue;
 }
@@ -160,7 +220,7 @@ let eventelements: Array<HTMLElement> = Array.from(
 );
 
 // sets all output values, including folder name, this is kind of the magnum opus
-const inputHandler = function (e: Event): string {
+const inputHandler = function (e: Event): void {
   console.log("it ran");
 
   // set folders **************
@@ -169,8 +229,10 @@ const inputHandler = function (e: Event): string {
     let assembledvalue: string = FolderValues[LookupValue]();
     ElmOps.setInnerText(LookupValue, assembledvalue);
   }
-  //set naming
-  return (copyOutput.innerHTML = assembleOutput());
+  //set naming for all asset elements, need to update to dynamically generate output values
+  for (let i of AssetElms) {
+    ElmOps.setInnerHTML(i, getAssetNames[i]);
+  }
 };
 
 // assigns event handler to all dropdowns - still need to capture all dropdowns
@@ -186,6 +248,13 @@ for (let i of eventelements) {
 }
 
 // copy value to clipboard - need to iterate over each button
+/*
 copyOutput?.addEventListener("click", () =>
   CopyOutputtoClipboard(copyOutput.innerHTML)
 );
+*/
+for (let i of AssetElms) {
+  ElmOps.getElement(i).addEventListener("click", () =>
+    CopyOutputtoClipboard(ElmOps.getElement(i).innerHTML)
+  );
+}
