@@ -222,14 +222,30 @@ let FolderValues: object = {
 //  constructor();
 //}
 
-let copyOutput = document.getElementById("CampaignName") as HTMLInputElement;
-let campaignName = document?.getElementById("campaignName") as HTMLInputElement;
-let businessUnit = document?.getElementById("businessUnit") as HTMLInputElement;
-let isTest: boolean = (document.getElementById("isTest") as HTMLInputElement)
-  .checked;
-let includeDay: boolean = (document.getElementById(
-  "includeDay"
-) as HTMLInputElement).checked;
+interface Options {
+  isTest(): boolean;
+  includeDay(): boolean;
+}
+
+let checkOptions: Options = {
+  isTest: (): boolean => {
+    return (document.getElementById("isTest") as HTMLInputElement).checked;
+  },
+  includeDay: (): boolean => {
+    return (document.getElementById("includeDay") as HTMLInputElement).checked;
+  }
+};
+
+console.log(checkOptions.isTest());
+
+//let copyOutput = document.getElementById("CampaignName") as HTMLInputElement;
+//let campaignName = document?.getElementById("campaignName") as HTMLInputElement;
+//let businessUnit = document?.getElementById("businessUnit") as HTMLInputElement;
+//let isTest: boolean = (document.getElementById("isTest") as HTMLInputElement)
+//  .checked;
+//let includeDay: boolean = (document.getElementById(
+//"includeDay"
+//) as HTMLInputElement).checked;
 
 function returnOptions(): number {
   let optionnumb: number;
@@ -258,12 +274,12 @@ function CopyOutputtoClipboard(output: string): void {
 class AssetNames {
   get CampaignName(): string {
     return (
-      (isTest ? "[TEST]-" : "") +
+      (checkOptions.isTest() ? "[TEST]-" : "") +
       ElmOps.getElmVal("Year") +
       "-" +
       ElmOps.getElmVal("Month") +
       "-" +
-      (includeDay ? ElmOps.getElmVal("Day") + "-" : "") +
+      (checkOptions.includeDay() ? ElmOps.getElmVal("Day") + "-" : "") +
       ElmOps.getElmVal("businessUnit") +
       "-" +
       (ElmOps.getElmVal("locationGroup").length > 1
@@ -330,6 +346,10 @@ let getAssetNames = new AssetNames();
 let eventelements: Array<HTMLElement> = Array.from(
   document.querySelectorAll("input")
 );
+// get all select elements for event listener
+let dropelements: Array<HTMLSelectElement> = Array.from(
+  document.querySelectorAll("select")
+);
 
 // sets all output values, including folder name, this is kind of the magnum opus
 const inputHandler = function (e: Event): void {
@@ -348,8 +368,9 @@ const inputHandler = function (e: Event): void {
 };
 
 // assigns event handler to all dropdowns - still need to capture all dropdowns
-let dropdownelm: HTMLElement | null = document.getElementById("dropdown");
-dropdownelm!.onchange = inputHandler;
+for (let i of dropelements) {
+  i.onchange = inputHandler;
+}
 
 //console.log(dropdownelm[0].innerHTML);
 //document?.getElementById("dropdown").onchange = inputHandler;
