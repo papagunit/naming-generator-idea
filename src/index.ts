@@ -23,6 +23,24 @@ let BusinessUnits: Array<string> = ["tbd", "tbd"];
 let LocationGroups: Array<string> = ["tbd", "tbd"];
 let ServiceLine: Array<string> = ["tbd", "tbd"];
 
+let TimeStamp = getCurrentTimestamp();
+let utc_date: string = new Date(TimeStamp).toUTCString();
+let year: string = new Date(TimeStamp).getFullYear();
+
+let time: object = {
+  getCurrentTimestamp: (): number => {
+    return Date.now();
+  },
+  getUTCDate: (): string => {
+    let timestamp: number = Date.now();
+    return new Date(timestamp).toUTCString();
+  },
+  getYear: (): string => {
+    let timestamp: number = Date.now();
+    return new Date(timestamp).toUTCString();
+  }
+};
+
 interface Elms {
   copyOutput: HTMLInputElement;
   campaignName: HTMLInputElement;
