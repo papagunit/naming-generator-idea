@@ -24,12 +24,20 @@ interface Dropdowns {
 
 // use these to generate dropdowns
 let BusinessUnits: Dropdowns = {
-  null: "Please Select",
+  "": "Please Select",
   oneval: "one",
   twoval: "two"
 };
-let LocationGroups: Dropdowns = { oneval: "one", twoval: "two" };
-let ServiceLine: Dropdowns = { oneval: "one", twoval: "two" };
+let LocationGroups: Dropdowns = {
+  "": "Please Select",
+  oneval: "one",
+  twoval: "two"
+};
+let ServiceLine: Dropdowns = {
+  "": "Please Select",
+  oneval: "one",
+  twoval: "two"
+};
 
 interface Months {
   [index: number]: string;
@@ -86,20 +94,6 @@ let times: timetable = {
   }
 };
 
-//test times
-console.log(times.getYear());
-console.log(times.getMonth());
-console.log(times.getDay());
-
-interface Elms {
-  copyOutput: HTMLInputElement;
-  campaignName: HTMLInputElement;
-  businessUnit: HTMLInputElement;
-  isTest: boolean;
-  includeDay: boolean;
-  getelm(): void;
-}
-
 // used for ElmOps
 interface Operations {
   setInnerText(name: string, value: string): void;
@@ -111,7 +105,7 @@ interface Operations {
   setInnerSelectHTML(name: string, value: string): void;
 }
 
-// Necessary type assertion. This object has functions to get and set folder naming
+// Necessary type assertion. This object has functions to get and set elements
 let ElmOps: Operations = {
   setInnerText: (name: string, value: string): void => {
     let ElementHolder: HTMLElement = ElmOps.getElement(name);
@@ -122,6 +116,7 @@ let ElmOps: Operations = {
     let elm = document.getElementById(name) as HTMLInputElement;
     return elm;
   },
+  // this also works for dropdowns
   getElmVal: (name: string): string => {
     return (document.getElementById(name) as HTMLInputElement).value;
   },
@@ -149,6 +144,7 @@ let ElmOps: Operations = {
   }
 };
 
+// Put these in some sort of init
 ElmOps.setSelectValue("Year", times.getYear());
 ElmOps.setSelectValue("Month", times.getMonth());
 ElmOps.setInputValue("Day", times.getDay());
@@ -170,15 +166,6 @@ for (const [key, value] of Object.entries(ServiceLine)) {
     "serviceLine",
     '<option value="' + key + '">' + value + "</option>"
   );
-}
-
-// gets current dropdown value, need to add a param for the element
-function getdropvalue(id: string): string {
-  let currentdropvalue: string | undefined = (document.getElementById(
-    id
-  ) as HTMLSelectElement).value;
-  console.log(currentdropvalue);
-  return currentdropvalue;
 }
 
 // element names for the buttons
@@ -206,54 +193,53 @@ let FolderElms: Array<string> = [
 
 // set folder generation logic here, called the FolderElms array and ElmOps functions. Should we convert these to getters?
 
+function defaultFoldering(): string {
+  return (
+    ElmOps.getElmVal("businessUnit") +
+    " -> 20" +
+    ElmOps.getElmVal("Year") +
+    " -> [" +
+    ElmOps.getElmVal("Month") +
+    "] -> " +
+    (ElmOps.getElmVal("campaignType").length > 1
+      ? ElmOps.getElmVal("campaignType") + " -> "
+      : "") +
+    (ElmOps.getElmVal("campaignName").length > 1
+      ? "[" + ElmOps.getElmVal("campaignName") + "]"
+      : "")
+  );
+}
+
+function buYearFoldering(): string {
+  return ElmOps.getElmVal("businessUnit") + " -> 20" + ElmOps.getElmVal("Year");
+}
+
 let FolderValues: object = {
   CampaignFolder: (): string => {
-    return (
-      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
-    );
+    return defaultFoldering();
   },
   EmailFolder: (): string => {
-    return (
-      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
-    );
+    return defaultFoldering();
   },
   SegmentFolder: (): string => {
-    return (
-      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
-    );
+    return defaultFoldering();
   },
   FormFolder: (): string => {
-    return (
-      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
-    );
+    return defaultFoldering();
   },
   LPFolder: (): string => {
-    return (
-      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
-    );
+    return defaultFoldering();
   },
   ContentFolder: (): string => {
-    return (
-      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
-    );
+    return defaultFoldering();
   },
   ProgramFolder: (): string => {
-    return (
-      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
-    );
+    return buYearFoldering();
   },
   FilterFolder: (): string => {
-    return (
-      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
-    );
+    return defaultFoldering();
   }
 };
-
-//FolderList.setInnerText(FolderList.CampaignFolder, "this is a test");
-
-//class ElmList implements Elms {
-//  constructor();
-//}
 
 interface Options {
   isTest(): boolean;
@@ -271,41 +257,13 @@ let checkOptions: Options = {
 
 console.log(checkOptions.isTest());
 
-//let copyOutput = document.getElementById("CampaignName") as HTMLInputElement;
-//let campaignName = document?.getElementById("campaignName") as HTMLInputElement;
-//let businessUnit = document?.getElementById("businessUnit") as HTMLInputElement;
-//let isTest: boolean = (document.getElementById("isTest") as HTMLInputElement)
-//  .checked;
-//let includeDay: boolean = (document.getElementById(
-//"includeDay"
-//) as HTMLInputElement).checked;
-
-function returnOptions(): number {
-  let optionnumb: number;
-  if (isTest && includeDay) {
-    optionnumb = 4;
-    return optionnumb;
-  } else if (isTest && !includeDay) {
-    optionnumb = 3;
-    return optionnumb;
-  } else if (!isTest && includeDay) {
-    optionnumb = 2;
-    return optionnumb;
-  } else if (!isTest && !includeDay) {
-    optionnumb = 1;
-    return optionnumb;
-  } else {
-    optionnumb = 0;
-    return optionnumb;
-  }
-}
 // next to impossible to debug in here
 function CopyOutputtoClipboard(output: string): void {
   window.navigator["clipboard"].writeText(output);
 }
 
 class AssetNames {
-  get CampaignName(): string {
+  defaultName(): string {
     return (
       (checkOptions.isTest() ? "[TEST]-" : "") +
       ElmOps.getElmVal("Year") +
@@ -337,40 +295,30 @@ class AssetNames {
     );
   }
 
+  get CampaignName(): string {
+    return this.defaultName();
+  }
+
   get EmailName(): string {
-    return (
-      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
-    );
+    return this.defaultName();
   }
   get SegmentName(): string {
-    return (
-      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
-    );
+    return this.defaultName();
   }
   get FormName(): string {
-    return (
-      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
-    );
+    return this.defaultName();
   }
   get LPName(): string {
-    return (
-      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
-    );
+    return this.defaultName();
   }
   get ContentName(): string {
-    return (
-      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
-    );
+    return this.defaultName();
   }
   get ProgramName(): string {
-    return (
-      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
-    );
+    return this.defaultName();
   }
   get SharedFilter(): string {
-    return (
-      ElmOps.getElmVal("campaignName") + "-" + ElmOps.getElmVal("businessUnit")
-    );
+    return this.defaultName();
   }
 }
 
@@ -406,20 +354,13 @@ for (let i of dropelements) {
   i.onchange = inputHandler;
 }
 
-//console.log(dropdownelm[0].innerHTML);
-//document?.getElementById("dropdown").onchange = inputHandler;
 // set event handlers for input fields and checkboxes
 for (let i of eventelements) {
   i.addEventListener("input", inputHandler);
   i.addEventListener("propertychange", inputHandler);
 }
 
-// copy value to clipboard - need to iterate over each button
-/*
-copyOutput?.addEventListener("click", () =>
-  CopyOutputtoClipboard(copyOutput.innerHTML)
-);
-*/
+// copy value to clipboard, iterates over each button
 for (let i of AssetElms) {
   ElmOps.getElement(i).addEventListener("click", () =>
     CopyOutputtoClipboard(ElmOps.getElement(i).innerHTML)
