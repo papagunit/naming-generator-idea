@@ -2,14 +2,8 @@ import "./styles.css";
 
 /*
 Next steps:
-Objects for each dropdown
 Function to generate dropdown from object, start this function on load - 
 business unit, location group, service line, campaign type
-
-Object with each element
-Object with each select, iterate over that with the event handler
-Object for each output name, then use the object properties
-Object for each output folder, add internal function using this and then property name
 
 Length limit recommendations if exceeds
 Copy services for each button
@@ -284,13 +278,13 @@ class AssetNames {
       ElmOps.getElmVal("campaignType") +
       "-" +
       (ElmOps.getElmVal("Description").length > 1
-        ? ElmOps.getElmVal("Description") + "-"
+        ? ElmOps.getElmVal("Description")
         : "") +
       (ElmOps.getElmVal("Series").length > 1
-        ? ElmOps.getElmVal("Series") + "-"
+        ? +"-" + ElmOps.getElmVal("Series")
         : "") +
       (ElmOps.getElmVal("Version").length > 1
-        ? ElmOps.getElmVal("Version") + "-"
+        ? +"-" + ElmOps.getElmVal("Version") + "-"
         : "")
     );
   }
