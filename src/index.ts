@@ -16,11 +16,24 @@ interface Dropdowns {
   [index: string]: string;
 }
 
-// use these to generate dropdowns
+// use these to generate dropdowns. Value on the right is shown in box
 let BusinessUnits: Dropdowns = {
   "": "Please Select",
-  oneval: "one",
-  twoval: "two"
+  TH: "Trinity Health",
+  HCHFL: "Holy Cross Health FL",
+  HCHMD: "Holy Cross Health MD",
+  Loyola: "Loyola Medicine",
+  THMI: "Trinity Health Michigan",
+  MO: "MercyOne",
+  MCHS: "Mount Carmel Health System",
+  SAMC: "Saint Agnes Medical Center",
+  SAHS: "Saint Alphonsus Regional Medical Center",
+  SJMED: "Saint Joseph Health System - Indiana",
+  SJHSYR: "St. Joseph's Health",
+  "SMHCS GA": "St. Mary's Health Care System",
+  SPHP: "St. Peter's Health Partners",
+  THMA: "Trinity Health Mid Atlantic",
+  THOfNE: "Trinity Health Of New England"
 };
 let LocationGroups: Dropdowns = {
   "": "Please Select",
