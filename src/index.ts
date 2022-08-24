@@ -5,8 +5,9 @@ Next steps:
 Function to generate dropdown from object, start this function on load - 
 business unit, location group, service line, campaign type
 
+Update folder logic
+
 Length limit recommendations if exceeds
-Copy services for each button
 
 [TEST]-FiscalYear-Month-[Day]-Business Unit/Ministry Abbreviation-[Location/Medical Group]-
 Service Line-Brief Name-Campaign Type-[Shortened Subject Line or description]-[Number in
@@ -280,24 +281,23 @@ class AssetNames {
       (checkOptions.includeDay() ? ElmOps.getElmVal("Day") + "-" : "") +
       ElmOps.getElmVal("businessUnit") +
       "-" +
-      (ElmOps.getElmVal("locationGroup").length > 1
+      (ElmOps.getElmVal("locationGroup").length > 0
         ? ElmOps.getElmVal("locationGroup") + "-"
         : "") +
-      (ElmOps.getElmVal("serviceLine").length > 1
+      (ElmOps.getElmVal("serviceLine").length > 0
         ? ElmOps.getElmVal("serviceLine") + "-"
         : "") +
       ElmOps.getElmVal("campaignName") +
       "-" +
       ElmOps.getElmVal("campaignType") +
-      "-" +
-      (ElmOps.getElmVal("Description").length > 1
-        ? ElmOps.getElmVal("Description")
+      (ElmOps.getElmVal("Description").length > 0
+        ? "-" + ElmOps.getElmVal("Description")
         : "") +
-      (ElmOps.getElmVal("Series").length > 1
-        ? +"-" + ElmOps.getElmVal("Series")
+      (ElmOps.getElmVal("Series") !== ""
+        ? "-" + ElmOps.getElmVal("Series")
         : "") +
-      (ElmOps.getElmVal("Version").length > 1
-        ? +"-" + ElmOps.getElmVal("Version") + "-"
+      (ElmOps.getElmVal("Version") !== ""
+        ? "-v" + ElmOps.getElmVal("Version")
         : "")
     );
   }
@@ -350,13 +350,13 @@ const inputHandler = function (e: Event): void {
     let assembledvalue: string = FolderValues[LookupValue]();
     ElmOps.setInnerText(LookupValue, assembledvalue);
   }
-  //set naming for all asset elements, need to update to dynamically generate output values
+  //set naming for all asset elements
   for (let i of AssetElms) {
     ElmOps.setInnerHTML(i, getAssetNames[i]);
   }
 };
 
-// assigns event handler to all dropdowns - still need to capture all dropdowns
+// assigns event handler to all dropdowns
 for (let i of dropelements) {
   i.onchange = inputHandler;
 }
