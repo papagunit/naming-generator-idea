@@ -5,109 +5,198 @@
   </head>
 
   <body>
-    <!-- fiscal year-->
+    <!-- top row -->
+    <div class="rowOfFields" style="display: table;">
+      <!-- fiscal year-->
+      <div class="firstCol">
+        <label for="Year">Year</label>
+        <select name="Year" id="Year">
+          <option value="">Year</option>
+          <option value="22">2022</option>
+          <option value="23">2023</option>
+          <option value="24">2024</option>
+        </select>
+      </div>
+      <div class="secondCol">
+        <!-- Month-->
+        <label for="Month">Month</label>
+        <select name="Month" id="Month">
+          <option value="">Month</option>
+          <option value="JAN">January</option>
+          <option value="FEB">February</option>
+          <option value="MAR">March</option>
+          <option value="APR">April</option>
+          <option value="MAY">May</option>
+          <option value="JUN">June</option>
+          <option value="JUL">July</option>
+          <option value="AUG">August</option>
+          <option value="SEP">September</option>
+          <option value="OCT">October</option>
+          <option value="NOV">November</option>
+          <option value="DEC">December</option>
+        </select>
+      </div>
+      <div class="thirdCol">
+        <!-- Day -->
+        <label for="Day">Day</label>
+        <input type="text" name="Day" id="Day" />
+      </div>
+      <div class="fourthCol">
+        <!-- Business Unit-->
+        <label for="businessUnit">Business Unit</label>
+        <select name="businessUnit" id="businessUnit"> </select>
+      </div>
+    </div>
 
-    <select name="Year" id="Year">
-      <option value="">Year</option>
-      <option value="22">2022</option>
-      <option value="23">2023</option>
-      <option value="24">2024</option>
-    </select>
-    <!-- Month-->
-    <select name="Month" id="Month">
-      <option value="">Month</option>
-      <option value="JAN">January</option>
-      <option value="FEB">February</option>
-      <option value="MAR">March</option>
-      <option value="APR">April</option>
-      <option value="MAY">May</option>
-      <option value="JUN">June</option>
-      <option value="JUL">July</option>
-      <option value="AUG">August</option>
-      <option value="SEP">September</option>
-      <option value="OCT">October</option>
-      <option value="NOV">November</option>
-      <option value="DEC">December</option>
-    </select>
-    <!-- Day -->
-    <label for="Day">Day</label>
-    <input type="text" name="Day" id="Day" />
-    <!-- Business Unit-->
-    <label for="businessUnit">Business Unit</label>
-    <select name="businessUnit" id="businessUnit" />
-  </select>
-    <!-- Location/Medical Group-->
-    <label for="locationGroup">Location/Medical Group</label>
-    <select name="locationGroup" id="locationGroup" />
-  </select>
-    <!-- Service Line-->
-    <label for="serviceLine">Service Line</label>
-    <select name="serviceLine" id="serviceLine" />
-  </select>
-    <!-- Campaign Name-->
-    <label for="campaignName">Campaign Name</label>
-    <input type="text" name="campaignName" id="campaignName" />
-    <!-- Campaign Type-->
-    <label for="campaignType">Campaign Type</label>
-    <input type="text" name="campaignType" id="campaignType" />
-    <!-- Description -->
-    <label for="Description">Brief Description</label>
+    <!-- 2nd row -->
+    <div class="rowOfFields" style="display: table;">
+      <div class="firstCol">
+        <!-- Location/Medical Group-->
+        <label for="locationGroup">Location/Medical Group</label>
+        <select name="locationGroup" id="locationGroup"> </select>
+      </div>
 
-    <input type="text" name="Description" id="Description" placeholder="Or Subject Line" />
+      <div class="secondCol">
+        <!-- Service Line-->
+        <label for="serviceLine">Service Line</label>
+        <select name="serviceLine" id="serviceLine"> </select>
+      </div>
 
-    <!-- Series -->
-    <label for="Series">Series</label>
-    <input type="text" name="Series" id="Series" />
-    <!-- Version -->
-    <label for="Version">Version</label>
-    <input type="text" name="Version" id="Version" />
+      <div class="thirdCol">
+        <!-- Campaign Name-->
+        <label for="campaignName">Campaign Name</label>
+        <input type="text" name="campaignName" id="campaignName" />
+      </div>
 
-    <label for="isTest">Is Test?</label>
-    <input type="checkbox" name="isTest" id="isTest" value="true" />
+      <div class="fourthCol">
+        <!-- Campaign Type-->
+        <label for="campaignType">Campaign Type</label>
+        <input type="text" name="campaignType" id="campaignType" />
+      </div>
+    </div>
 
-    <label for="includeDay">Include Day?</label>
-    <input type="checkbox" name="includeDay" id="includeDay" value="true" />
+    <!-- 3rd row -->
+    <div class="rowOfFields" style="display: table;">
+      <div class="firstCol">
+        <!-- Description -->
+        <label for="Description">Brief Description</label>
 
-    <br />
-    Campaign Name:
-    <button id="CampaignName"></button>
-    <span>Folder Location: </span><span id="CampaignFolder"></span>
+        <input
+          type="text"
+          name="Description"
+          id="Description"
+          placeholder="Or Subject Line"
+        />
+      </div>
 
-    <br />
-    Email Name:
-    <button id="EmailName"></button>
-    <span>Folder Location: </span><span id="EmailFolder"></span>
+      <div class="secondCol">
+        <!-- Series -->
+        <label for="Series">Series</label>
+        <input type="text" name="Series" id="Series" />
+      </div>
 
-    <br />
-    Segment Name:
-    <button id="SegmentName"></button>
-    <span>Folder Location: </span><span id="SegmentFolder"></span>
+      <div class="thirdCol">
+        <!-- Version -->
+        <label for="Version">Version</label>
+        <input type="text" name="Version" id="Version" />
+      </div>
 
-    <br />
-    Form Name:
-    <button id="FormName"></button>
-    <span>Folder Location: </span><span id="FormFolder"></span>
+      <div class="fourthCol" style="height: 59px; vertical-align: bottom;">
+        <label
+          for="isTest"
+          style="display: inline-table; vertical-align: middle;"
+          >Is Test?</label
+        >
+        <input
+          class="checkboxesTopMar"
+          type="checkbox"
+          name="isTest"
+          id="isTest"
+          value="true"
+        />
 
-    <br />
-    Landing Page Name:
-    <button id="LPName"></button>
-    <span>Folder Location: </span><span id="LPFolder"></span>
+        <br />
 
-    <br />
-    Dynamic/Shared Content:
-    <button id="ContentName"></button>
-    <span>Folder Location: </span><span id="ContentFolder"></span>
+        <label
+          for="includeDay"
+          style="
+            display: inline-table;
+            vertical-align: middle;
+            margin-bottom: 0px;
+          "
+          >Include Day?</label
+        >
+        <input type="checkbox" name="includeDay" id="includeDay" value="true" />
+      </div>
+    </div>
 
-    <br />
-    Program Name:
-    <button id="ProgramName"></button>
-    <span>Folder Location: </span><span id="ProgramFolder"></span>
+    <!--Output -->
 
-    <br />
-    Shared Filter:
-    <button id="SharedFilter"></button>
-    <span>Folder Location: </span><span id="FilterFolder"></span>
+    <!-- 1st Row -->
+    <div class="bottomRowOfFields">
+      <div class="firstCol">
+        <strong> Campaign Name: </strong>
+        <button id="CampaignName"></button> <br /><br /><span
+          >Folder&nbsp;Location: </span
+        ><span id="CampaignFolder"></span>
+      </div>
 
+      <div class="fourthCol">
+        Email Name:
+        <button id="EmailName"></button> <br /><br /><span
+          >Folder&nbsp;Location: </span
+        ><span id="EmailFolder"></span>
+      </div>
+    </div>
+
+    <!-- 2nd Row -->
+    <div class="bottomRowOfFields">
+      <div class="firstCol">
+        Segment Name:
+        <button id="SegmentName"></button> <br /><br /><span
+          >Folder&nbsp;Location: </span
+        ><span id="SegmentFolder"></span>
+      </div>
+      <div class="fourthCol">
+        Form Name:
+        <button id="FormName"></button> <br /><br /><span
+          >Folder&nbsp;Location: </span
+        ><span id="FormFolder"></span>
+      </div>
+    </div>
+
+    <!-- 2nd Row -->
+    <div class="bottomRowOfFields">
+      <div class="firstCol">
+        Landing Page Name:
+        <button id="LPName"></button> <br /><br /><span
+          >Folder&nbsp;Location: </span
+        ><span id="LPFolder"></span>
+      </div>
+      <div class="fourthCol">
+        Dynamic/Shared Content:
+        <button id="ContentName"></button> <br /><br /><span
+          >Folder&nbsp;Location: </span
+        ><span id="ContentFolder"></span>
+      </div>
+    </div>
+
+    <!-- 2nd Row -->
+    <div class="bottomRowOfFields">
+      <div class="firstCol">
+        Program Name:
+        <button id="ProgramName"></button> <br /><br /><span
+          >Folder&nbsp;Location: </span
+        ><span id="ProgramFolder"></span>
+      </div>
+
+      <div class="fourthCol">
+        Shared Filter:
+        <button id="SharedFilter"></button> <br /><br /><span
+          >Folder&nbsp;Location: </span
+        ><span id="FilterFolder"></span>
+      </div>
+    </div>
     <script async src="src/index.ts"></script>
   </body>
 </html>

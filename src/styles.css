@@ -1,3 +1,153 @@
+/*general styling*/
 body {
-  font-family: sans-serif;
+  max-width: 980px;
+  margin: 10% auto 0px auto;
+  font-family: "Myriad Pro", Helvetica, Arial, "sans-serif";
+  color: #4a4a4a;
+  font-weight: 600;
+}
+
+label {
+  margin-bottom: 5px;
+  display: block;
+  font-family: "Myriad Pro", Helvetica, Arial, "sans-serif";
+  color: #4a4a4d;
+  font-weight: 600;
+}
+
+input[type="text"],
+input[type="url"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+input[type="date"],
+textarea,
+select {
+  padding: 9px 10px !important;
+  border-radius: 3px !important;
+  border: 1px solid #a4a4a4 !important;
+  min-height: 36px !important;
+  vertical-align: middle !important;
+  max-width: 230px !important;
+  width: 100%;
+}
+
+button {
+  border: none;
+  min-width: 100px;
+  background-color: transparent;
+  height: 36px;
+  margin: 0px 10px 0px 5px;
+}
+button:hover {
+  border-bottom: solid 1px #0240df !important;
+  cursor: pointer;
+}
+
+/*structural styling*/
+.rowOfFields {
+  display: table;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.rowOfFields > div {
+  display: table-cell;
+  width: 25%;
+}
+.firstCol {
+  padding-right: 15px;
+  padding-left: 0px;
+}
+.secondCol,
+.thirdCol {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.fourthCol {
+  padding-left: 15px;
+  padding-right: 0px;
+}
+
+.bottomRowOfFields {
+  display: table;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.bottomRowOfFields > div {
+  display: table-cell;
+  width: 50%;
+}
+
+/*mobile*/
+@media screen and (max-width: 991px) {
+  body {
+    width: 94% !important;
+  }
+  .rowOfFields {
+    width: 100%;
+    margin: 0 auto;
+  }
+  .rowOfFields > div {
+    display: inline-block;
+    width: calc(50% - 15px);
+    padding: 0px;
+    padding-bottom: 20px;
+  }
+  input[type="text"],
+  input[type="url"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="date"],
+  textarea,
+  select {
+    max-width: 100% !important;
+    width: 100%;
+  }
+  .firstCol {
+    padding-left: 0px !important;
+    padding-right: 15px !important;
+  }
+  .secondCol {
+    padding-left: 15px !important;
+    padding-right: 0px !important;
+  }
+  .thirdCol {
+    padding-left: 0px !important;
+    padding-right: 15px !important;
+  }
+  .fourthCol {
+    padding-left: 15px !important;
+    padding-right: 0px !important;
+  }
+  .checkboxesTopMar {
+    margin-top: 18px !important;
+  }
+
+  .bottomRowOfFields {
+    display: block;
+    width: 100%;
+    margin-bottom: 0px !important;
+  }
+  .bottomRowOfFields > div {
+    display: block;
+    width: 100%;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    margin-bottom: 20px !important;
+  }
+}
+
+/*smaller screens*/
+@media screen and (max-width: 500px) {
+  .rowOfFields > div {
+    display: block !important;
+    width: 100% !important;
+    padding: 0px !important;
+    padding-bottom: 20px !important;
+  }
+
+  .checkboxesTopMar {
+    margin-top: 0px !important;
+  }
 }
