@@ -271,49 +271,55 @@ function CopyOutputtoClipboard(output: string): void {
 }
 
 class InputValues {
+  d: string;
+  constructor(delimiter: string) {
+    this.d = delimiter;
+  }
   get Year(): string {
     return (
-      (checkOptions.isTest() ? "[TEST]-" : "") + ElmOps.getElmVal("Year") + "-"
+      (checkOptions.isTest() ? "[TEST]" + this.d : "") +
+      ElmOps.getElmVal("Year") +
+      this.d
     );
   }
   get Month(): string {
-    return ElmOps.getElmVal("Month") + "-";
+    return ElmOps.getElmVal("Month") + this.d;
   }
   get Day(): string {
-    return checkOptions.includeDay() ? ElmOps.getElmVal("Day") + "-" : "";
+    return checkOptions.includeDay() ? ElmOps.getElmVal("Day") + this.d : "";
   }
   get BusinessUnit(): string {
-    return ElmOps.getElmVal("businessUnit") + "-";
+    return ElmOps.getElmVal("businessUnit") + this.d;
   }
   get LocationGroup(): string {
     return ElmOps.getElmVal("locationGroup").length > 0
-      ? ElmOps.getElmVal("locationGroup") + "-"
+      ? ElmOps.getElmVal("locationGroup") + this.d
       : "";
   }
   get ServiceLine(): string {
     return ElmOps.getElmVal("serviceLine").length > 0
-      ? ElmOps.getElmVal("serviceLine") + "-"
+      ? ElmOps.getElmVal("serviceLine") + this.d
       : "";
   }
   get Campaign(): string {
-    return ElmOps.getElmVal("campaignName") + "-";
+    return ElmOps.getElmVal("campaignName") + this.d;
   }
   get CampaignType(): string {
     return ElmOps.getElmVal("campaignType");
   }
   get Description(): string {
     return ElmOps.getElmVal("Description").length > 0
-      ? "-" + ElmOps.getElmVal("Description")
+      ? this.d + ElmOps.getElmVal("Description")
       : "";
   }
   get Series(): string {
     return ElmOps.getElmVal("Series") !== ""
-      ? "-" + ElmOps.getElmVal("Series")
+      ? this.d + ElmOps.getElmVal("Series")
       : "";
   }
   get Version(): string {
     return ElmOps.getElmVal("Version") !== ""
-      ? "-v" + ElmOps.getElmVal("Version")
+      ? this.d + "v" + ElmOps.getElmVal("Version")
       : "";
   }
 }
@@ -368,7 +374,7 @@ class AssetNames extends InputValues {
   }
 }
 
-let getAssetNames = new AssetNames();
+let getAssetNames = new AssetNames("-");
 
 // get all elements that should have an event listener
 let eventelements: Array<HTMLElement> = Array.from(
