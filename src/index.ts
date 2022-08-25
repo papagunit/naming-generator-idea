@@ -270,62 +270,101 @@ function CopyOutputtoClipboard(output: string): void {
   window.navigator["clipboard"].writeText(output);
 }
 
-class AssetNames {
-  defaultName(): string {
+class InputValues {
+  get Year(): string {
     return (
-      (checkOptions.isTest() ? "[TEST]-" : "") +
-      ElmOps.getElmVal("Year") +
-      "-" +
-      ElmOps.getElmVal("Month") +
-      "-" +
-      (checkOptions.includeDay() ? ElmOps.getElmVal("Day") + "-" : "") +
-      ElmOps.getElmVal("businessUnit") +
-      "-" +
-      (ElmOps.getElmVal("locationGroup").length > 0
-        ? ElmOps.getElmVal("locationGroup") + "-"
-        : "") +
-      (ElmOps.getElmVal("serviceLine").length > 0
-        ? ElmOps.getElmVal("serviceLine") + "-"
-        : "") +
-      ElmOps.getElmVal("campaignName") +
-      "-" +
-      ElmOps.getElmVal("campaignType") +
-      (ElmOps.getElmVal("Description").length > 0
-        ? "-" + ElmOps.getElmVal("Description")
-        : "") +
-      (ElmOps.getElmVal("Series") !== ""
-        ? "-" + ElmOps.getElmVal("Series")
-        : "") +
-      (ElmOps.getElmVal("Version") !== ""
-        ? "-v" + ElmOps.getElmVal("Version")
-        : "")
+      (checkOptions.isTest() ? "[TEST]-" : "") + ElmOps.getElmVal("Year") + "-"
     );
   }
+  get Month(): string {
+    return ElmOps.getElmVal("Month") + "-";
+  }
+  get Day(): string {
+    return checkOptions.includeDay() ? ElmOps.getElmVal("Day") + "-" : "";
+  }
+  get BusinessUnit(): string {
+    return ElmOps.getElmVal("businessUnit") + "-";
+  }
+  get LocationGroup(): string {
+    return ElmOps.getElmVal("locationGroup").length > 0
+      ? ElmOps.getElmVal("locationGroup") + "-"
+      : "";
+  }
+  get ServiceLine(): string {
+    return ElmOps.getElmVal("serviceLine").length > 0
+      ? ElmOps.getElmVal("serviceLine") + "-"
+      : "";
+  }
+  get Campaign(): string {
+    return ElmOps.getElmVal("campaignName") + "-";
+  }
+  get CampaignType(): string {
+    return ElmOps.getElmVal("campaignType");
+  }
+  get Description(): string {
+    return ElmOps.getElmVal("Description").length > 0
+      ? "-" + ElmOps.getElmVal("Description")
+      : "";
+  }
+  get Series(): string {
+    return ElmOps.getElmVal("Series") !== ""
+      ? "-" + ElmOps.getElmVal("Series")
+      : "";
+  }
+  get Version(): string {
+    return ElmOps.getElmVal("Version") !== ""
+      ? "-v" + ElmOps.getElmVal("Version")
+      : "";
+  }
+}
 
+// sets logic for output order and formatting
+class AssetNames extends InputValues {
+  defaultLogic: Array<string> = [
+    "Year",
+    "Month",
+    "Day",
+    "BusinessUnit",
+    "LocationGroup",
+    "ServiceLine",
+    "Campaign",
+    "CampaignType",
+    "Description",
+    "Series",
+    "Version"
+  ];
+  defaultName(logic: string): string {
+    let y: string = "";
+    for (let i of this[logic]) {
+      y += this[i];
+    }
+    return y;
+  }
+  // specify the different sets of logic you want to use for a specific asset
   get CampaignName(): string {
-    return this.defaultName();
+    return this.defaultName("defaultLogic");
   }
 
   get EmailName(): string {
-    return this.defaultName();
+    return this.defaultName("defaultLogic");
   }
   get SegmentName(): string {
-    return this.defaultName();
+    return this.defaultName("defaultLogic");
   }
   get FormName(): string {
-    return this.defaultName();
+    return this.defaultName("defaultLogic");
   }
   get LPName(): string {
-    return this.defaultName();
+    return this.defaultName("defaultLogic");
   }
   get ContentName(): string {
-    return this.defaultName();
+    return this.defaultName("defaultLogic");
   }
   get ProgramName(): string {
-    return this.defaultName();
+    return this.defaultName("defaultLogic");
   }
   get SharedFilter(): string {
-    return this.defaultName();
+    return this.defaultName("defaultLogic");
   }
 }
 
