@@ -360,23 +360,29 @@ class InputValues {
     return checkOptions.includeDay() ? ElmOps.getElmVal("Day") + this.d : "";
   }
   get BusinessUnit(): string {
-    return ElmOps.getElmVal("businessUnit") + this.d;
+    return ElmOps.getElmVal("businessUnit").length > 0
+      ? ElmOps.getElmVal("businessUnit")
+      : "";
   }
   get LocationGroup(): string {
     return ElmOps.getElmVal("locationGroup").length > 0
-      ? ElmOps.getElmVal("locationGroup") + this.d
+      ? this.d + ElmOps.getElmVal("locationGroup")
       : "";
   }
   get ServiceLine(): string {
     return ElmOps.getElmVal("serviceLine").length > 0
-      ? ElmOps.getElmVal("serviceLine") + this.d
+      ? this.d + ElmOps.getElmVal("serviceLine")
       : "";
   }
   get Campaign(): string {
-    return ElmOps.getElmVal("campaignName") + this.d;
+    return ElmOps.getElmVal("campaignName").length > 0
+      ? this.d + ElmOps.getElmVal("campaignName")
+      : "";
   }
   get CampaignType(): string {
-    return ElmOps.getElmVal("campaignType");
+    return ElmOps.getElmVal("campaignType").length > 0
+      ? this.d + ElmOps.getElmVal("campaignType")
+      : "";
   }
   get Description(): string {
     return ElmOps.getElmVal("Description").length > 0
@@ -396,6 +402,7 @@ class InputValues {
 }
 
 class FolderNames extends InputValues {
+  // good for campaign, email, segments, forms, landing pages,
   defaultLogic: logicArray = [
     "BusinessUnit",
     "Year",
@@ -403,7 +410,13 @@ class FolderNames extends InputValues {
     "CampaignType",
     "Campaign"
   ];
-
+  yearLogic: logicArray = ["BusinessUnit", "Year"];
+  filterLogic: logicArray = [
+    "BusinessUnit",
+    "Year",
+    "CampaignType",
+    "Campaign"
+  ];
   Name(logic: string): string {
     let y: string = "";
     for (let i of this[logic]) {
@@ -429,13 +442,15 @@ class FolderNames extends InputValues {
     return this.Name("defaultLogic");
   }
   get ContentFolder(): string {
-    return this.Name("defaultLogic");
+    // shared or dynamic content
+    return this.Name("yearLogic");
   }
   get ProgramFolder(): string {
-    return this.Name("defaultLogic");
+    return this.Name("yearLogic");
   }
   get SharedFolder(): string {
-    return this.Name("defaultLogic");
+    // shared filter and lists
+    return this.Name("filterLogic");
   }
 }
 
