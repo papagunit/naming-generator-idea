@@ -412,7 +412,7 @@ class InputValues {
 class FolderNames extends InputValues {
   // good for campaign, email, segments, forms, landing pages,
   defaultLogic: logicArray = [
-    "BusinessUnit",
+    "folderBusinessUnit",
     "folderYear",
     "Month",
     "CampaignType",
@@ -420,7 +420,7 @@ class FolderNames extends InputValues {
   ];
   yearLogic: logicArray = ["BusinessUnit", "folderYear"];
   filterLogic: logicArray = [
-    "BusinessUnit",
+    "folderBusinessUnit",
     "folderYear",
     "CampaignType",
     "Campaign"
