@@ -394,6 +394,7 @@ class InputValues {
 
 // sets logic for output order and formatting
 class AssetNames extends InputValues {
+  // for Campaigns, Emails,
   defaultLogic: Array<string> = [
     "Year",
     "Month",
@@ -407,6 +408,47 @@ class AssetNames extends InputValues {
     "Series",
     "Version"
   ];
+
+  segmentLogic: Array<string> = [
+    "Year",
+    "Month",
+    "Day",
+    "BusinessUnit",
+    "LocationGroup",
+    "ServiceLine",
+    "Campaign",
+    "CampaignType",
+    "Description"
+  ];
+  pageLogic: Array<string> = [
+    "Year",
+    "Month",
+    "Day",
+    "BusinessUnit",
+    "LocationGroup",
+    "ServiceLine",
+    "Campaign",
+    "CampaignType",
+    "Description",
+    "Version"
+  ];
+  programLogic: Array<string> = [
+    "Year",
+    "Month",
+    "BusinessUnit",
+    "LocationGroup",
+    "ServiceLine",
+    "Campaign",
+    "CampaignType",
+    "Description"
+  ];
+  filterLogic: Array<string> = [
+    "Year",
+    "BusinessUnit",
+    "LocationGroup",
+    "Description"
+  ];
+
   defaultName(logic: string): string {
     let y: string = "";
     for (let i of this[logic]) {
@@ -423,22 +465,22 @@ class AssetNames extends InputValues {
     return this.defaultName("defaultLogic");
   }
   get SegmentName(): string {
-    return this.defaultName("defaultLogic");
+    return this.defaultName("segmentLogic");
   }
   get FormName(): string {
     return this.defaultName("defaultLogic");
   }
   get LPName(): string {
-    return this.defaultName("defaultLogic");
+    return this.defaultName("pageLogic");
   }
   get ContentName(): string {
     return this.defaultName("defaultLogic");
   }
   get ProgramName(): string {
-    return this.defaultName("defaultLogic");
+    return this.defaultName("programLogic");
   }
   get SharedFilter(): string {
-    return this.defaultName("defaultLogic");
+    return this.defaultName("filterLogic");
   }
 }
 
