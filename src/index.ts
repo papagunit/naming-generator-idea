@@ -353,6 +353,9 @@ class InputValues {
       this.d
     );
   }
+  get folderYear(): string {
+    return ElmOps.getElmVal("Year") + this.d;
+  }
   get Month(): string {
     return ElmOps.getElmVal("Month") + this.d;
   }
@@ -405,15 +408,15 @@ class FolderNames extends InputValues {
   // good for campaign, email, segments, forms, landing pages,
   defaultLogic: logicArray = [
     "BusinessUnit",
-    "Year",
+    "folderYear",
     "Month",
     "CampaignType",
     "Campaign"
   ];
-  yearLogic: logicArray = ["BusinessUnit", "Year"];
+  yearLogic: logicArray = ["BusinessUnit", "folderYear"];
   filterLogic: logicArray = [
     "BusinessUnit",
-    "Year",
+    "folderYear",
     "CampaignType",
     "Campaign"
   ];
