@@ -13,6 +13,7 @@
   },
   "license": "UNLICENSED",
   "dependencies": {
+    "@babel/core": "7.18.13",
     "node": "18.7.0",
     "parcel-bundler": "^1.6.1",
     "ts-node": "10.9.1",
