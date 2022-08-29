@@ -270,7 +270,7 @@ let FolderElms: Array<string> = [
 ];
 
 // set folder generation logic here, called the FolderElms array and ElmOps functions. Should we convert these to getters?
-
+/*
 function defaultFoldering(): string {
   return (
     ElmOps.getElmVal("businessUnit") +
@@ -291,6 +291,8 @@ function defaultFoldering(): string {
 function buYearFoldering(): string {
   return ElmOps.getElmVal("businessUnit") + " -> 20" + ElmOps.getElmVal("Year");
 }
+
+*/
 /*
 let FolderValues: object = {
   CampaignFolder: (): string => {
@@ -349,18 +351,17 @@ class InputValues {
   get Year(): string {
     return (
       (checkOptions.isTest() ? "[TEST]" + this.d : "") +
-      ElmOps.getElmVal("Year") +
-      this.d
+      ElmOps.getElmVal("Year")
     );
   }
   get folderYear(): string {
-    return "20" + ElmOps.getElmVal("Year") + this.d;
+    return "20" + ElmOps.getElmVal("Year");
   }
   get Month(): string {
-    return ElmOps.getElmVal("Month") + this.d;
+    return this.d + ElmOps.getElmVal("Month");
   }
   get Day(): string {
-    return checkOptions.includeDay() ? ElmOps.getElmVal("Day") + this.d : "";
+    return checkOptions.includeDay() ? this.d + ElmOps.getElmVal("Day") : "";
   }
   get BusinessUnit(): string {
     return ElmOps.getElmVal("businessUnit").length > 0
