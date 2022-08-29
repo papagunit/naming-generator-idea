@@ -336,8 +336,6 @@ let checkOptions: Options = {
   }
 };
 
-console.log(checkOptions.isTest());
-
 // next to impossible to debug in here
 function CopyOutputtoClipboard(output: string): void {
   window.navigator["clipboard"].writeText(output);
@@ -568,9 +566,7 @@ let dropelements: Array<HTMLSelectElement> = Array.from(
 
 // sets all output values, including folder name, this is kind of the magnum opus
 const inputHandler = function (e: Event): void {
-  console.log("it ran");
-
-  // set folders **************
+  // set folders
   for (let LookupValue of FolderElms) {
     // let assembledvalue: string = pull from an object, pass LookupValue as key, uses foldervalues
     //   let assembledvalue: string = FolderValues[LookupValue]();
