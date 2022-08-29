@@ -17,6 +17,8 @@ interface Dropdowns {
   [index: string]: string;
 }
 
+type logicArray = Array<string>;
+
 // use these to generate dropdowns. Value on the right is shown in box
 let BusinessUnits: Dropdowns = {
   "": "Please Select",
@@ -289,7 +291,7 @@ function defaultFoldering(): string {
 function buYearFoldering(): string {
   return ElmOps.getElmVal("businessUnit") + " -> 20" + ElmOps.getElmVal("Year");
 }
-
+/*
 let FolderValues: object = {
   CampaignFolder: (): string => {
     return defaultFoldering();
@@ -316,6 +318,7 @@ let FolderValues: object = {
     return defaultFoldering();
   }
 };
+*/
 
 interface Options {
   isTest(): boolean;
@@ -392,10 +395,54 @@ class InputValues {
   }
 }
 
+class FolderNames extends InputValues {
+  defaultLogic: logicArray = [
+    "BusinessUnit",
+    "Year",
+    "Month",
+    "CampaignType",
+    "Campaign"
+  ];
+
+  Name(logic: string): string {
+    let y: string = "";
+    for (let i of this[logic]) {
+      y += this[i];
+    }
+    return y;
+  }
+  // specify the different sets of logic you want to use for a specific asset
+  get CampaignFolder(): string {
+    return this.Name("defaultLogic");
+  }
+
+  get EmailFolder(): string {
+    return this.Name("defaultLogic");
+  }
+  get SegmentFolder(): string {
+    return this.Name("defaultLogic");
+  }
+  get FormFolder(): string {
+    return this.Name("defaultLogic");
+  }
+  get LPFolder(): string {
+    return this.Name("defaultLogic");
+  }
+  get ContentFolder(): string {
+    return this.Name("defaultLogic");
+  }
+  get ProgramFolder(): string {
+    return this.Name("defaultLogic");
+  }
+  get SharedFolder(): string {
+    return this.Name("defaultLogic");
+  }
+}
+
 // sets logic for output order and formatting
 class AssetNames extends InputValues {
   // for Campaigns, Emails,
-  defaultLogic: Array<string> = [
+  defaultLogic: logicArray = [
     "Year",
     "Month",
     "Day",
@@ -409,7 +456,7 @@ class AssetNames extends InputValues {
     "Version"
   ];
 
-  segmentLogic: Array<string> = [
+  segmentLogic: logicArray = [
     "Year",
     "Month",
     "Day",
@@ -420,7 +467,7 @@ class AssetNames extends InputValues {
     "CampaignType",
     "Description"
   ];
-  pageLogic: Array<string> = [
+  pageLogic: logicArray = [
     "Year",
     "Month",
     "Day",
@@ -432,7 +479,7 @@ class AssetNames extends InputValues {
     "Description",
     "Version"
   ];
-  programLogic: Array<string> = [
+  programLogic: logicArray = [
     "Year",
     "Month",
     "BusinessUnit",
@@ -442,14 +489,14 @@ class AssetNames extends InputValues {
     "CampaignType",
     "Description"
   ];
-  filterLogic: Array<string> = [
+  filterLogic: logicArray = [
     "Year",
     "BusinessUnit",
     "LocationGroup",
     "Description"
   ];
 
-  defaultName(logic: string): string {
+  Name(logic: string): string {
     let y: string = "";
     for (let i of this[logic]) {
       y += this[i];
@@ -458,34 +505,34 @@ class AssetNames extends InputValues {
   }
   // specify the different sets of logic you want to use for a specific asset
   get CampaignName(): string {
-    return this.defaultName("defaultLogic");
+    return this.Name("defaultLogic");
   }
 
   get EmailName(): string {
-    return this.defaultName("defaultLogic");
+    return this.Name("defaultLogic");
   }
   get SegmentName(): string {
-    return this.defaultName("segmentLogic");
+    return this.Name("segmentLogic");
   }
   get FormName(): string {
-    return this.defaultName("defaultLogic");
+    return this.Name("defaultLogic");
   }
   get LPName(): string {
-    return this.defaultName("pageLogic");
+    return this.Name("pageLogic");
   }
   get ContentName(): string {
-    return this.defaultName("defaultLogic");
+    return this.Name("defaultLogic");
   }
   get ProgramName(): string {
-    return this.defaultName("programLogic");
+    return this.Name("programLogic");
   }
   get SharedFilter(): string {
-    return this.defaultName("filterLogic");
+    return this.Name("filterLogic");
   }
 }
 
 let getAssetNames = new AssetNames("-");
-
+let getFolderNames = new FolderNames("=>");
 // get all elements that should have an event listener
 let eventelements: Array<HTMLElement> = Array.from(
   document.querySelectorAll("input")
@@ -502,8 +549,9 @@ const inputHandler = function (e: Event): void {
   // set folders **************
   for (let LookupValue of FolderElms) {
     // let assembledvalue: string = pull from an object, pass LookupValue as key, uses foldervalues
-    let assembledvalue: string = FolderValues[LookupValue]();
-    ElmOps.setInnerText(LookupValue, assembledvalue);
+    //   let assembledvalue: string = FolderValues[LookupValue]();
+    //  ElmOps.setInnerText(LookupValue, assembledvalue);
+    ElmOps.setInnerHTML(LookupValue, getFolderNames[LookupValue]);
   }
   //set naming for all asset elements
   for (let i of AssetElms) {
