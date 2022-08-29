@@ -354,7 +354,7 @@ class InputValues {
     );
   }
   get folderYear(): string {
-    return ElmOps.getElmVal("Year") + this.d;
+    return "20" + ElmOps.getElmVal("Year") + this.d;
   }
   get Month(): string {
     return ElmOps.getElmVal("Month") + this.d;
