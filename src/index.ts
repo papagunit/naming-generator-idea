@@ -354,7 +354,7 @@ class InputValues {
     );
   }
   get folderYear(): string {
-    return this.d + "20" + ElmOps.getElmVal("Year");
+    return "20" + ElmOps.getElmVal("Year") + this.d;
   }
   get Month(): string {
     return ElmOps.getElmVal("Month") + this.d;
@@ -365,6 +365,11 @@ class InputValues {
   get BusinessUnit(): string {
     return ElmOps.getElmVal("businessUnit").length > 0
       ? ElmOps.getElmVal("businessUnit")
+      : "";
+  }
+  get folderBusinessUnit(): string {
+    return ElmOps.getElmVal("businessUnit").length > 0
+      ? ElmOps.getElmVal("businessUnit") + this.d
       : "";
   }
   get LocationGroup(): string {
