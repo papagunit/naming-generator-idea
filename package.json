@@ -2,17 +2,21 @@
   "name": "naming-generator",
   "version": "1.0.0",
   "description": "",
-  "main": "index.html",
+  "source": "src/index.ts",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "start": "parcel index.html --open",
-    "build": "parcel build index.html"
+    "build": "parcel build src/index.ts",
+    "lint": "eslint",
+    "check": "tsc --noEmit",
+    "ci": "yarn build && yarn test && yarn lint && yarn check"
   },
   "license": "UNLICENSED",
   "dependencies": {
-    "parcel-bundler": "^1.6.1"
-  },
-  "devDependencies": {
-    "typescript": "4.4.4"
+    "eslint": "8.23.0",
+    "parcel-bundler": "^1.6.1",
+    "typescript": "4.8.2"
   },
   "resolutions": {
     "@babel/preset-env": "7.13.8"

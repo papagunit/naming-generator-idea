@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "strict": true,
-    "outDir": "dist",
+    "outDir": "build/dist",
     "module": "esnext",
     "jsx": "preserve",
     "target": "es6",
@@ -9,11 +9,12 @@
       "es2017",
       "dom"
     ],
+    "composite": true,
+    "useDefineForClassFields": true,
     "sourceMap": true,
     "esModuleInterop": true,
-    "allowJs": true,
+    "allowJs": false,
     "moduleResolution": "node",
-    "rootDir": "src",
     "forceConsistentCasingInFileNames": false,
     "noImplicitReturns": true,
     "noImplicitThis": true,
