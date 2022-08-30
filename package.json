@@ -6,8 +6,8 @@
   "main": "dist/index.js",
   "types": "dist/types.d.ts",
   "scripts": {
-    "start": "parcel",
-    "build": "parcel build",
+    "start": "parcel index.html --open",
+    "build": "parcel build index.html",
     "lint": "eslint",
     "check": "tsc --noEmit"
   },
