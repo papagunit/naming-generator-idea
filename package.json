@@ -2,7 +2,7 @@
   "name": "naming-generator",
   "version": "1.0.0",
   "description": "",
-  "source": "src/index.ts",
+  "source": "index.html",
   "main": "dist/index.js",
   "types": "dist/types.d.ts",
   "scripts": {
