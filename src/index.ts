@@ -363,7 +363,7 @@ class InputValues {
   }
   get BusinessUnit(): string {
     return ElmOps.getElmVal("businessUnit").length > 0
-      ? ElmOps.getElmVal("businessUnit")
+      ? this.d + ElmOps.getElmVal("businessUnit")
       : "";
   }
   get folderBusinessUnit(): string {
@@ -417,7 +417,7 @@ class FolderNames extends InputValues {
     "CampaignType",
     "Campaign"
   ];
-  yearLogic: logicArray = ["BusinessUnit", "folderYear"];
+  yearLogic: logicArray = ["folderBusinessUnit", "folderYear"];
   filterLogic: logicArray = [
     "folderBusinessUnit",
     "folderYear",
@@ -455,7 +455,7 @@ class FolderNames extends InputValues {
   get ProgramFolder(): string {
     return this.Name("yearLogic");
   }
-  get SharedFolder(): string {
+  get FilterFolder(): string {
     // shared filter and lists
     return this.Name("filterLogic");
   }
@@ -554,7 +554,7 @@ class AssetNames extends InputValues {
 }
 
 let getAssetNames = new AssetNames("-");
-let getFolderNames = new FolderNames("=>");
+let getFolderNames = new FolderNames(" => ");
 // get all elements that should have an event listener
 let eventelements: Array<HTMLElement> = Array.from(
   document.querySelectorAll("input")
