@@ -141,6 +141,8 @@ interface timetable {
   getYear(): string;
   getMonth(): string;
   getDay(): string;
+  monthNumberFromString(month: string): number;
+  getDaysSelectedMonth(): number;
 }
 
 let times: timetable = {
@@ -167,6 +169,22 @@ let times: timetable = {
     let timestamp: number = Date.now();
     let localtime: number = new Date(timestamp).getDate();
     return localtime.toString();
+  },
+  monthNumberFromString: (month: string): number => {
+    return (new Date(`${month} 01 2000`).toLocaleDateString(`en`, {
+      month: `numeric`
+    }) as unknown) as number;
+  },
+  // returns the max number of days within a month
+  getDaysSelectedMonth: (): number => {
+    let month: string = (document.getElementById("Month") as HTMLInputElement)
+      .value;
+    let monthnumber: number = times.monthNumberFromString(month);
+    let year: number = ((document.getElementById("Year") as HTMLSelectElement)
+      ?.options[
+      (document.getElementById("Year") as HTMLSelectElement)?.selectedIndex
+    ].text as unknown) as number;
+    return new Date(year, monthnumber, 0).getDate();
   }
 };
 
@@ -270,57 +288,6 @@ let FolderElms: Array<string> = [
 ];
 
 // set folder generation logic here, called the FolderElms array and ElmOps functions. Should we convert these to getters?
-/*
-function defaultFoldering(): string {
-  return (
-    ElmOps.getElmVal("businessUnit") +
-    " -> 20" +
-    ElmOps.getElmVal("Year") +
-    " -> [" +
-    ElmOps.getElmVal("Month") +
-    "] -> " +
-    (ElmOps.getElmVal("campaignType").length > 1
-      ? ElmOps.getElmVal("campaignType") + " -> "
-      : "") +
-    (ElmOps.getElmVal("campaignName").length > 1
-      ? "[" + ElmOps.getElmVal("campaignName") + "]"
-      : "")
-  );
-}
-
-function buYearFoldering(): string {
-  return ElmOps.getElmVal("businessUnit") + " -> 20" + ElmOps.getElmVal("Year");
-}
-
-*/
-/*
-let FolderValues: object = {
-  CampaignFolder: (): string => {
-    return defaultFoldering();
-  },
-  EmailFolder: (): string => {
-    return defaultFoldering();
-  },
-  SegmentFolder: (): string => {
-    return defaultFoldering();
-  },
-  FormFolder: (): string => {
-    return defaultFoldering();
-  },
-  LPFolder: (): string => {
-    return defaultFoldering();
-  },
-  ContentFolder: (): string => {
-    return defaultFoldering();
-  },
-  ProgramFolder: (): string => {
-    return buYearFoldering();
-  },
-  FilterFolder: (): string => {
-    return defaultFoldering();
-  }
-};
-*/
 
 interface Options {
   isTest(): boolean;
@@ -566,17 +533,19 @@ let dropelements: Array<HTMLSelectElement> = Array.from(
 
 // sets all output values, including folder name, this is kind of the magnum opus
 const inputHandler = function (e: Event): void {
-  // set folders
+  // call some sort of validation, in the future let validation block rest?
+  // validateInputs();
+  // set folder location values
   for (let LookupValue of FolderElms) {
-    // let assembledvalue: string = pull from an object, pass LookupValue as key, uses foldervalues
-    //   let assembledvalue: string = FolderValues[LookupValue]();
-    //  ElmOps.setInnerText(LookupValue, assembledvalue);
     ElmOps.setInnerHTML(LookupValue, getFolderNames[LookupValue]);
   }
   //set naming for all asset elements
   for (let i of AssetElms) {
     ElmOps.setInnerHTML(i, getAssetNames[i]);
   }
+
+  console.log(times.getDaysSelectedMonth());
+  console.log(times.monthNumberFromString("SEP"));
 };
 
 // assigns event handler to all dropdowns
