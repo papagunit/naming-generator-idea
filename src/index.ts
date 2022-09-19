@@ -2,10 +2,6 @@ import "./styles.css";
 
 /*
 Next steps:
-Function to generate dropdown from object, start this function on load - 
-business unit, location group, service line, campaign type
-
-Update folder logic
 
 Length limit recommendations if exceeds
 
@@ -144,7 +140,7 @@ interface timetable {
   monthNumberFromString(month: string): number;
   getDaysSelectedMonth(): number;
 }
-
+// object with useful date methods
 let times: timetable = {
   getCurrentTimestamp: (): number => {
     return Date.now();
@@ -238,32 +234,6 @@ let ElmOps: Operations = {
   }
 };
 
-// Put these in some sort of init
-ElmOps.setSelectValue("Year", times.getYear());
-ElmOps.setSelectValue("Month", times.getMonth());
-ElmOps.setInputValue("Day", times.getDay());
-
-for (const [key, value] of Object.entries(BusinessUnits)) {
-  ElmOps.setInnerSelectHTML(
-    "businessUnit",
-    '<option value="' + key + '">' + value + "</option>"
-  );
-}
-/* enabled this and interface again if we are using locationgroup dropdown
-for (const [key, value] of Object.entries(LocationGroups)) {
-  ElmOps.setInnerSelectHTML(
-    "locationGroup",
-    '<option value="' + key + '">' + value + "</option>"
-  );
-}
-*/
-for (const [key, value] of Object.entries(ServiceLine)) {
-  ElmOps.setInnerSelectHTML(
-    "serviceLine",
-    '<option value="' + key + '">' + value + "</option>"
-  );
-}
-
 // element names for the buttons
 let AssetElms: Array<string> = [
   "CampaignName",
@@ -302,11 +272,6 @@ let checkOptions: Options = {
     return (document.getElementById("includeDay") as HTMLInputElement).checked;
   }
 };
-
-// next to impossible to debug in here
-function CopyOutputtoClipboard(output: string): void {
-  window.navigator["clipboard"].writeText(output);
-}
 
 class InputValues {
   d: string;
@@ -430,7 +395,7 @@ class FolderNames extends InputValues {
 
 // sets logic for output order and formatting
 class AssetNames extends InputValues {
-  // for Campaigns, Emails,
+  // default for Campaigns, Emails, Forms, and Dynamic/Shared Content
   defaultLogic: logicArray = [
     "Year",
     "Month",
@@ -484,7 +449,7 @@ class AssetNames extends InputValues {
     "LocationGroup",
     "Description"
   ];
-
+  // allows us to iterate through the string arrays with the logic order
   Name(logic: string): string {
     let y: string = "";
     for (let i of this[logic]) {
@@ -520,48 +485,80 @@ class AssetNames extends InputValues {
   }
 }
 
-let getAssetNames = new AssetNames("-");
-let getFolderNames = new FolderNames(" => ");
-// get all elements that should have an event listener
-let eventelements: Array<HTMLElement> = Array.from(
-  document.querySelectorAll("input")
-);
-// get all select elements for event listener
-let dropelements: Array<HTMLSelectElement> = Array.from(
-  document.querySelectorAll("select")
-);
+function Main() {
+  ElmOps.setSelectValue("Year", times.getYear());
+  ElmOps.setSelectValue("Month", times.getMonth());
+  ElmOps.setInputValue("Day", times.getDay());
 
-// sets all output values, including folder name, this is kind of the magnum opus
-const inputHandler = function (e: Event): void {
-  // call some sort of validation, in the future let validation block rest?
-  // validateInputs();
-  // set folder location values
-  for (let LookupValue of FolderElms) {
-    ElmOps.setInnerHTML(LookupValue, getFolderNames[LookupValue]);
+  for (const [key, value] of Object.entries(BusinessUnits)) {
+    ElmOps.setInnerSelectHTML(
+      "businessUnit",
+      '<option value="' + key + '">' + value + "</option>"
+    );
   }
-  //set naming for all asset elements
-  for (let i of AssetElms) {
-    ElmOps.setInnerHTML(i, getAssetNames[i]);
-  }
-
-  console.log(times.getDaysSelectedMonth());
-  console.log(times.monthNumberFromString("SEP"));
-};
-
-// assigns event handler to all dropdowns
-for (let i of dropelements) {
-  i.onchange = inputHandler;
-}
-
-// set event handlers for input fields and checkboxes
-for (let i of eventelements) {
-  i.addEventListener("input", inputHandler);
-  i.addEventListener("propertychange", inputHandler);
-}
-
-// copy value to clipboard, iterates over each button
-for (let i of AssetElms) {
-  ElmOps.getElement(i).addEventListener("click", () =>
-    CopyOutputtoClipboard(ElmOps.getElement(i).innerHTML)
+  /* enabled this and interface again if we are using locationgroup dropdown
+for (const [key, value] of Object.entries(LocationGroups)) {
+  ElmOps.setInnerSelectHTML(
+    "locationGroup",
+    '<option value="' + key + '">' + value + "</option>"
   );
 }
+*/
+  for (const [key, value] of Object.entries(ServiceLine)) {
+    ElmOps.setInnerSelectHTML(
+      "serviceLine",
+      '<option value="' + key + '">' + value + "</option>"
+    );
+  }
+  // next to impossible to debug in here
+  function CopyOutputtoClipboard(output: string): void {
+    window.navigator["clipboard"].writeText(output);
+  }
+  // instantiate the classes and pass a delimiter parameter to the constructor
+  let getAssetNames: AssetNames = new AssetNames("-");
+  let getFolderNames: FolderNames = new FolderNames(" => ");
+  // get all elements that should have an event listener
+  let eventelements: Array<HTMLElement> = Array.from(
+    document.querySelectorAll("input")
+  );
+  // get all select elements for event listener
+  let dropelements: Array<HTMLSelectElement> = Array.from(
+    document.querySelectorAll("select")
+  );
+
+  // sets all output values, including folder name, this is kind of the magnum opus
+  const inputHandler = function (e: Event): void {
+    // call some sort of validation, in the future let validation block rest?
+    // validateInputs();
+    // set folder location values
+    for (let LookupValue of FolderElms) {
+      ElmOps.setInnerHTML(LookupValue, getFolderNames[LookupValue]);
+    }
+    //set naming for all asset elements
+    for (let i of AssetElms) {
+      ElmOps.setInnerHTML(i, getAssetNames[i]);
+    }
+
+    console.log(times.getDaysSelectedMonth());
+    console.log(times.monthNumberFromString("SEP"));
+  };
+
+  // assigns event handler to all dropdowns
+  for (let i of dropelements) {
+    i.onchange = inputHandler;
+  }
+
+  // set event handlers for input fields and checkboxes
+  for (let i of eventelements) {
+    i.addEventListener("input", inputHandler);
+    i.addEventListener("propertychange", inputHandler);
+  }
+
+  // copy output value upon click to clipboard, iterates over each 'button'
+  for (let i of AssetElms) {
+    ElmOps.getElement(i).addEventListener("click", () =>
+      CopyOutputtoClipboard(ElmOps.getElement(i).innerHTML)
+    );
+  }
+}
+Main();
