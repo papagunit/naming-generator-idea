@@ -14,6 +14,7 @@ interface Dropdowns {
 }
 
 type logicArray = Array<string>;
+type logicMap = Dropdowns;
 
 // use these to generate dropdowns. Value on the right is shown in box
 let BusinessUnits: Dropdowns = {
@@ -274,6 +275,26 @@ let checkOptions: Options = {
 };
 
 class InputValues {
+  assetLogicMapping: logicMap = {
+    CampaignName: "defaultLogic",
+    EmailName: "defaultLogic",
+    SegmentName: "segmentLogic",
+    FormName: "defaultLogic",
+    LPName: "pageLogic",
+    ContentName: "defaultLogic",
+    ProgramName: "programLogic",
+    SharedFilter: "filterLogic"
+  };
+  folderLogicMapping: logicMap = {
+    CampaignFolder: "defaultLogic",
+    EmailFolder: "defaultLogic",
+    SegmentFolder: "defaultLogic",
+    FormFolder: "defaultLogic",
+    LPFolder: "defaultLogic",
+    ContentFolder: "yearLogic",
+    ProgramFolder: "yearLogic",
+    FilterFolder: "filterLogic"
+  };
   d: string;
   constructor(delimiter: string) {
     this.d = delimiter;
@@ -338,6 +359,24 @@ class InputValues {
       ? this.d + "v" + ElmOps.getElmVal("Version")
       : "";
   }
+  Name(logic: string): string {
+    let y: string = "";
+    for (let i of this[logic]) {
+      y += this[i];
+    }
+    return y;
+  }
+
+  FindLogic(thing: string, aorf: number) {
+    let logic: string = "";
+    if (aorf === 1) {
+      logic = this.folderLogicMapping[thing];
+      return this.Name(logic);
+    } else {
+      logic = this.assetLogicMapping[thing];
+      return this.Name(logic);
+    }
+  }
 }
 
 class FolderNames extends InputValues {
@@ -356,41 +395,6 @@ class FolderNames extends InputValues {
     "CampaignType",
     "Campaign"
   ];
-  Name(logic: string): string {
-    let y: string = "";
-    for (let i of this[logic]) {
-      y += this[i];
-    }
-    return y;
-  }
-  // specify the different sets of logic you want to use for a specific asset
-  get CampaignFolder(): string {
-    return this.Name("defaultLogic");
-  }
-
-  get EmailFolder(): string {
-    return this.Name("defaultLogic");
-  }
-  get SegmentFolder(): string {
-    return this.Name("defaultLogic");
-  }
-  get FormFolder(): string {
-    return this.Name("defaultLogic");
-  }
-  get LPFolder(): string {
-    return this.Name("defaultLogic");
-  }
-  get ContentFolder(): string {
-    // shared or dynamic content
-    return this.Name("yearLogic");
-  }
-  get ProgramFolder(): string {
-    return this.Name("yearLogic");
-  }
-  get FilterFolder(): string {
-    // shared filter and lists
-    return this.Name("filterLogic");
-  }
 }
 
 // sets logic for output order and formatting
@@ -449,40 +453,6 @@ class AssetNames extends InputValues {
     "LocationGroup",
     "Description"
   ];
-  // allows us to iterate through the string arrays with the logic order
-  Name(logic: string): string {
-    let y: string = "";
-    for (let i of this[logic]) {
-      y += this[i];
-    }
-    return y;
-  }
-  // specify the different sets of logic you want to use for a specific asset
-  get CampaignName(): string {
-    return this.Name("defaultLogic");
-  }
-
-  get EmailName(): string {
-    return this.Name("defaultLogic");
-  }
-  get SegmentName(): string {
-    return this.Name("segmentLogic");
-  }
-  get FormName(): string {
-    return this.Name("defaultLogic");
-  }
-  get LPName(): string {
-    return this.Name("pageLogic");
-  }
-  get ContentName(): string {
-    return this.Name("defaultLogic");
-  }
-  get ProgramName(): string {
-    return this.Name("programLogic");
-  }
-  get SharedFilter(): string {
-    return this.Name("filterLogic");
-  }
 }
 
 function Main() {
@@ -532,15 +502,15 @@ for (const [key, value] of Object.entries(LocationGroups)) {
     // validateInputs();
     // set folder location values
     for (let LookupValue of FolderElms) {
-      ElmOps.setInnerHTML(LookupValue, getFolderNames[LookupValue]);
+      ElmOps.setInnerHTML(
+        LookupValue,
+        getFolderNames.FindLogic(LookupValue, 1)
+      );
     }
     //set naming for all asset elements
-    for (let i of AssetElms) {
-      ElmOps.setInnerHTML(i, getAssetNames[i]);
+    for (let LookupValue of AssetElms) {
+      ElmOps.setInnerHTML(LookupValue, getAssetNames.FindLogic(LookupValue, 2));
     }
-
-    console.log(times.getDaysSelectedMonth());
-    console.log(times.monthNumberFromString("SEP"));
   };
 
   // assigns event handler to all dropdowns
