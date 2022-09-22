@@ -2,7 +2,7 @@ import "./styles.css";
 
 /*
 Next steps:
-
+Add requirement message for business unit?
 Length limit recommendations if exceeds
 
 [TEST]-FiscalYear-Month-[Day]-Business Unit/Ministry Abbreviation-[Location/Medical Group]-
@@ -455,7 +455,24 @@ class AssetNames extends InputValues {
   ];
 }
 
+function Validation(): void {
+  // check if day fits within selected month
+  let dayInput: number = (ElmOps.getElmVal("Day") as unknown) as number;
+  if (dayInput > times.getDaysSelectedMonth() || dayInput < 1) {
+    (ElmOps.getElement("Day") as HTMLInputElement).setCustomValidity(
+      "Invalid day"
+    );
+    (ElmOps.getElement("Day") as HTMLInputElement).reportValidity();
+  } else {
+    (ElmOps.getElement("Day") as HTMLInputElement).setCustomValidity("");
+  }
+}
+
 function Main() {
+  (ElmOps.getElement("Day") as HTMLInputElement).setCustomValidity(
+    "Invalid day"
+  );
+  // InvalidMsg(ElmOps.getElement("Day") as HTMLInputElement);
   ElmOps.setSelectValue("Year", times.getYear());
   ElmOps.setSelectValue("Month", times.getMonth());
   ElmOps.setInputValue("Day", times.getDay());
@@ -500,17 +517,23 @@ for (const [key, value] of Object.entries(LocationGroups)) {
   const inputHandler = function (e: Event): void {
     // call some sort of validation, in the future let validation block rest?
     // validateInputs();
-    // set folder location values
-    for (let LookupValue of FolderElms) {
-      ElmOps.setInnerHTML(
-        LookupValue,
-        getFolderNames.FindLogic(LookupValue, 1)
-      );
+    if (ElmOps.getElmVal("businessUnit") !== "") {
+      // set folder location values
+      for (let LookupValue of FolderElms) {
+        ElmOps.setInnerHTML(
+          LookupValue,
+          getFolderNames.FindLogic(LookupValue, 1)
+        );
+      }
+      //set naming for all asset elements
+      for (let LookupValue of AssetElms) {
+        ElmOps.setInnerHTML(
+          LookupValue,
+          getAssetNames.FindLogic(LookupValue, 2)
+        );
+      }
     }
-    //set naming for all asset elements
-    for (let LookupValue of AssetElms) {
-      ElmOps.setInnerHTML(LookupValue, getAssetNames.FindLogic(LookupValue, 2));
-    }
+    Validation();
   };
 
   // assigns event handler to all dropdowns
