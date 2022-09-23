@@ -366,8 +366,8 @@ class InputValues {
     }
     return y;
   }
-
-  FindLogic(thing: string, aorf: number) {
+  // returns complete output given the logic selected
+  FindLogic(thing: string, aorf: number): string {
     let logic: string = "";
     if (aorf === 1) {
       logic = this.folderLogicMapping[thing];
@@ -467,6 +467,13 @@ function Validation(): void {
     (ElmOps.getElement("Day") as HTMLInputElement).setCustomValidity("");
   }
 }
+function ValidationBlocker(): boolean {
+  if (ElmOps.getElmVal("businessUnit") === "") {
+    return false;
+  } else {
+    return true;
+  }
+}
 
 function Main() {
   (ElmOps.getElement("Day") as HTMLInputElement).setCustomValidity(
@@ -517,7 +524,7 @@ for (const [key, value] of Object.entries(LocationGroups)) {
   const inputHandler = function (e: Event): void {
     // call some sort of validation, in the future let validation block rest?
     // validateInputs();
-    if (ElmOps.getElmVal("businessUnit") !== "") {
+    if (ValidationBlocker()) {
       // set folder location values
       for (let LookupValue of FolderElms) {
         ElmOps.setInnerHTML(
@@ -525,12 +532,64 @@ for (const [key, value] of Object.entries(LocationGroups)) {
           getFolderNames.FindLogic(LookupValue, 1)
         );
       }
+      // new map with lookupvalue and output
+      let outputLengthMapping = new Map<string, number>();
       //set naming for all asset elements
       for (let LookupValue of AssetElms) {
+        outputLengthMapping.set(
+          LookupValue,
+          getAssetNames.FindLogic(LookupValue, 2).length
+        );
+        console.log(outputLengthMapping);
         ElmOps.setInnerHTML(
           LookupValue,
           getAssetNames.FindLogic(LookupValue, 2)
         );
+        // check length for each record on map. need to create a map with rec length
+        // get/lookup value in rec length map and then compare to value in current
+        // three outcomes: valid, warning, invalid. Perhaps two passes, one for invalid and one for warning
+        // well this is a nightmare https://github.com/microsoft/TypeScript/issues/9619
+        interface GuardedMap<K, V> extends Map<K, V> {
+          has<S extends K>(
+            k: S
+          ): this is (K extends S ? {} : { get(k: S): V }) & this;
+        }
+        const warningMap: GuardedMap<string, number> = new Map<string, number>([
+          ["CampaignName", 54],
+          ["EmailName", 62],
+          ["SegmentName", 62],
+          ["FormName", 59],
+          ["LPName", 65],
+          ["ContentName", 39],
+          ["ProgramName", 54],
+          ["SharedFilter", 61]
+        ]);
+        const limitMap = new Map<string, number>([
+          ["CampaignName", 100],
+          ["EmailName", 100],
+          ["SegmentName", 100],
+          ["FormName", 100],
+          ["LPName", 100],
+          ["ContentName", 100],
+          ["ProgramName", 100],
+          ["SharedFilter", 100]
+        ]);
+        function setLimitMessage(HTMLName: string): void {
+          // to do: return an actual error on the element. Can define in elmops using element.style.backgroundColor = "yellow"
+
+          return console.log(`warning, ${HTMLName} exceeded length`);
+        }
+        function warningValidation(len: number, key: string): void {
+          if (
+            warningMap instanceof Map &&
+            warningMap.has(key) &&
+            warningMap.get(key)! < len
+          ) {
+            setLimitMessage(key);
+          }
+        }
+        // check the length of each output provided and pass that to the warning map
+        outputLengthMapping.forEach(warningValidation);
       }
     }
     Validation();
