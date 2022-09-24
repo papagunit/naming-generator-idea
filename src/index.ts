@@ -1,10 +1,6 @@
 import "./styles.css";
 
 /*
-Next steps:
-Add requirement message for business unit?
-Length limit recommendations if exceeds
-
 [TEST]-FiscalYear-Month-[Day]-Business Unit/Ministry Abbreviation-[Location/Medical Group]-
 Service Line-Brief Name-Campaign Type-[Shortened Subject Line or description]-[Number in
 series]-[Version Number]
@@ -540,15 +536,14 @@ for (const [key, value] of Object.entries(LocationGroups)) {
           LookupValue,
           getAssetNames.FindLogic(LookupValue, 2).length
         );
-        console.log(outputLengthMapping);
         ElmOps.setInnerHTML(
           LookupValue,
           getAssetNames.FindLogic(LookupValue, 2)
         );
         // check length for each record on map. need to create a map with rec length
         // get/lookup value in rec length map and then compare to value in current
-        // three outcomes: valid, warning, invalid. Perhaps two passes, one for invalid and one for warning
-        // well this is a nightmare https://github.com/microsoft/TypeScript/issues/9619
+        // three outcomes: valid, warning, invalid.
+        // well, this is a nightmare https://github.com/microsoft/TypeScript/issues/9619
         interface GuardedMap<K, V> extends Map<K, V> {
           has<S extends K>(
             k: S
@@ -574,22 +569,39 @@ for (const [key, value] of Object.entries(LocationGroups)) {
           ["ProgramName", 100],
           ["SharedFilter", 100]
         ]);
-        function setLimitMessage(HTMLName: string): void {
+        function setLimitMessage(HTMLName: string, flag: number): void {
           // to do: return an actual error on the element. Can define in elmops using element.style.backgroundColor = "yellow"
+          let y: HTMLElement = ElmOps.getElement(HTMLName);
+          if (flag === 1) {
+            y.style.backgroundColor = "yellow";
+          } else if (flag === 2) {
+            y.style.backgroundColor = "red";
+          } else {
+            y.style.backgroundColor = "";
+          }
 
           return console.log(`warning, ${HTMLName} exceeded length`);
         }
-        function warningValidation(len: number, key: string): void {
+        function limitValidation(len: number, key: string): void {
           if (
             warningMap instanceof Map &&
             warningMap.has(key) &&
-            warningMap.get(key)! < len
+            warningMap.get(key)! < len &&
+            limitMap.get(key)! > len
           ) {
-            setLimitMessage(key);
+            setLimitMessage(key, 1);
+          } else if (
+            limitMap instanceof Map &&
+            limitMap.has(key) &&
+            limitMap.get(key)! < len
+          ) {
+            setLimitMessage(key, 2);
+          } else {
+            setLimitMessage(key, 0);
           }
         }
-        // check the length of each output provided and pass that to the warning map
-        outputLengthMapping.forEach(warningValidation);
+        // check the length of each output provided and pass that to the map
+        outputLengthMapping.forEach(limitValidation);
       }
     }
     Validation();
