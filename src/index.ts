@@ -570,7 +570,7 @@ for (const [key, value] of Object.entries(LocationGroups)) {
           ["SharedFilter", 100]
         ]);
         function setLimitMessage(HTMLName: string, flag: number): void {
-          // to do: return an actual error on the element. Can define in elmops using element.style.backgroundColor = "yellow"
+          // highlights the button with yellow if it exceeds recommendation and red when it exceeds system limit
           let y: HTMLElement = ElmOps.getElement(HTMLName);
           if (flag === 1) {
             y.style.backgroundColor = "yellow";
@@ -579,8 +579,6 @@ for (const [key, value] of Object.entries(LocationGroups)) {
           } else {
             y.style.backgroundColor = "";
           }
-
-          return console.log(`warning, ${HTMLName} exceeded length`);
         }
         function limitValidation(len: number, key: string): void {
           if (
